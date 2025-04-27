@@ -1,12 +1,12 @@
 ﻿using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain;
 
 namespace MyLedgerApp.Services
 {
     public interface ITransactionService
     {
-        TransactionDTO AddTransaction(Transaction transaction);
+        TransactionDTO AddTransaction(TransactionRequest transactionDTO);
+        void DeleteTransaction(Guid id);
         TransactionDTO GetTransactionById(Guid id);
-        IEnumerable<TransactionDTO> GetTransactions();
+        IEnumerable<TransactionDTO> GetAllTransactions();
     }
 }

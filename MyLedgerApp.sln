@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLedgerApp", "OnlineCoursePlatform\MyLedgerApp.csproj", "{0764CF04-6971-4168-8CA4-FC110E91E803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLedgerApp", "MyLedgerApp\MyLedgerApp.csproj", "{0764CF04-6971-4168-8CA4-FC110E91E803}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

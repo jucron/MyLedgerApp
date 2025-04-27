@@ -1,6 +1,4 @@
-﻿using MyLedgerApp.Domain;
-
-namespace MyLedgerApp.Domain
+﻿namespace MyLedgerApp.Domain
 {
     public class Transaction
     {
@@ -10,7 +8,7 @@ namespace MyLedgerApp.Domain
         public TransactionType Type { get; set; }
         public string Description { get; set; } = "";
         public Client Client { get; set; }
-        public Employee Employee { get; set; }
+        public Ledger Ledger { get; set; }
 
     }
 }

@@ -15,7 +15,6 @@ namespace MyLedgerApp.Api.v1.Mappers
                 Timestamp = transaction.Timestamp,
                 Type = transaction.Type,
                 ClientName = transaction.Client.Name,
-                EmployeeName = transaction.Employee.Name
             };
         }
     }

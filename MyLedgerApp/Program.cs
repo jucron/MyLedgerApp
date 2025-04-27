@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using MyLedgerApp.Repositories;
 using MyLedgerApp.Services;
 
@@ -12,14 +13,23 @@ namespace MyLedgerApp
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+             {
+                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+             });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Add singletons
+            // Register singletons
             builder.Services.AddSingleton<ITransactionService, TransactionService>();
             builder.Services.AddSingleton<ITransactionRepository, TransactionRepositoryMock>();
+
+            builder.Services.AddSingleton<IUserService, UserService>();
+            builder.Services.AddSingleton<IUserRepository, UserRepositoryMock>();
+
+            builder.Services.AddSingleton<ILedgerService, LedgerService>();
+            builder.Services.AddSingleton<ILedgerRepository, LedgerRepositoryMock>();
 
             var app = builder.Build();
 
@@ -33,7 +43,6 @@ namespace MyLedgerApp
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
