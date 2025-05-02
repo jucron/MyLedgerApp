@@ -19,15 +19,22 @@ namespace MyLedgerApp.Services
         public LedgerDTO AddLedger(LedgerRequest request)
         {
             var clientOwner = _userRepository.GetUserById(request.ClientId);
+            var employee = _userRepository.GetUserById(request.EmployeeId);
 
             if (clientOwner == null)
                 throw new UserNotFoundException(request.ClientId);
 
+            if (employee == null)
+                throw new UserNotFoundException(request.EmployeeId);
+
             if (clientOwner is Employee)
-                throw new InvalidOperationException("User should be a Client");
+                throw new InvalidOperationException($"User {clientOwner.Name} should be a Client");
+
+            if (employee is Client)
+                throw new InvalidOperationException($"User {employee.Name} should be an Employee");
 
             // Add Client to the Ledger 
-            Ledger ledgerToBeAdded = new() { Client = (Client)clientOwner };
+            Ledger ledgerToBeAdded = new() { Client = (Client)clientOwner, Employee = (Employee)employee };
 
             // Add Ledger to the Client
             ((Client)clientOwner).Ledgers.Add(ledgerToBeAdded);

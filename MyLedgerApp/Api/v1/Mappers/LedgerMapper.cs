@@ -13,7 +13,8 @@ namespace MyLedgerApp.Api.v1.Mappers
                 CurrentBalance = ledger.CurrentBalance,
                 Transactions = isFullResponse ? ledger.Transactions.Select(t => TransactionMapper.MapTransactionToTransactionDTO(t)).ToList() : null,
                 TransactionsId = isFullResponse ? null : ledger.Transactions.Select(t => t.Id).ToList(),
-                ClientId = ledger.Client.Id
+                ClientId = ledger.Client.Id,
+                EmployeeId = ledger.Employee.Id
             };
         }
     }

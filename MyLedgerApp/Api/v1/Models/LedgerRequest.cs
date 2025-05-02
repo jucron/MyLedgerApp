@@ -3,6 +3,7 @@
     public class LedgerRequest
     {
         public Guid ClientId { get; set; }
+        public Guid EmployeeId { get; set; }
 
     }
 }
