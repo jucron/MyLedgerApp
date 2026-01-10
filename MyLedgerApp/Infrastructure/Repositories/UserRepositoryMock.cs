@@ -39,5 +39,11 @@ namespace MyLedgerApp.Infrastructure.Repositories
         {
             _users.Add(user);
         }
+
+        public User? GetUserByUsername(string username)
+        {
+            return _users.FirstOrDefault(u =>
+                string.Equals(u.Name, username, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

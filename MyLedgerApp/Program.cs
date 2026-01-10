@@ -1,8 +1,7 @@
 
 using System.Text.Json.Serialization;
-using MyLedgerApp.Application.Services;
+using MyLedgerApp.Application.Middlewares;
 using MyLedgerApp.Common.Extentions;
-using MyLedgerApp.Infrastructure.Repositories;
 
 namespace MyLedgerApp
 {
@@ -23,10 +22,10 @@ namespace MyLedgerApp
             // App Services
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices();
+
+            builder.Services.AddAuthSetup(builder.Configuration);
             
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
 
             if (app.Environment.IsDevelopment())
             {
@@ -34,8 +33,11 @@ namespace MyLedgerApp
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionHandler>();
+
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
