@@ -1,6 +1,7 @@
 
 using System.Text.Json.Serialization;
 using MyLedgerApp.Application.Services;
+using MyLedgerApp.Common.Extentions;
 using MyLedgerApp.Infrastructure.Repositories;
 
 namespace MyLedgerApp
@@ -11,29 +12,22 @@ namespace MyLedgerApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // Controllers
             builder.Services.AddControllers()
-            .AddJsonOptions(options =>
-             {
-                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-             });
+                .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
+
+            // Swagger
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Register singletons
-            builder.Services.AddSingleton<ITransactionService, TransactionService>();
-            builder.Services.AddSingleton<ITransactionRepository, TransactionRepositoryMock>();
-
-            builder.Services.AddSingleton<IUserService, UserService>();
-            builder.Services.AddSingleton<IUserRepository, UserRepositoryMock>();
-
-            builder.Services.AddSingleton<ILedgerService, LedgerService>();
-            builder.Services.AddSingleton<ILedgerRepository, LedgerRepositoryMock>();
-
+            // App Services
+            builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices();
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
