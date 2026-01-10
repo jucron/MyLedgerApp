@@ -1,6 +1,6 @@
-﻿using MyLedgerApp.Domain;
+﻿using MyLedgerApp.Domain.Entities;
 
-namespace MyLedgerApp.Repositories
+namespace MyLedgerApp.Infrastructure.Repositories
 {
     public class LedgerRepositoryMock : ILedgerRepository
     {

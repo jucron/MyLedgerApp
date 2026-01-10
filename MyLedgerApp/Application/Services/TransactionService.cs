@@ -1,11 +1,11 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain;
-using MyLedgerApp.Repositories;
-using MyLedgerApp.Utils;
-using static MyLedgerApp.Utils.Exceptions;
+using MyLedgerApp.Common.Utils;
+using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Infrastructure.Repositories;
+using static MyLedgerApp.Common.Utils.Exceptions;
 
-namespace MyLedgerApp.Services
+namespace MyLedgerApp.Application.Services
 {
     public class TransactionService : ITransactionService
     {

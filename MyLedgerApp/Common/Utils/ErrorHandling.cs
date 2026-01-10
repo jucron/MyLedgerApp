@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MyLedgerApp.Utils
+namespace MyLedgerApp.Common.Utils
 {
     public class ErrorHandling
     {

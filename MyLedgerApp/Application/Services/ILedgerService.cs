@@ -1,6 +1,6 @@
 ﻿using MyLedgerApp.Api.v1.Models;
 
-namespace MyLedgerApp.Services
+namespace MyLedgerApp.Application.Services
 {
     public interface ILedgerService
     {

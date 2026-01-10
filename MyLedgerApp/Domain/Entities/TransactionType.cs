@@ -1,4 +1,4 @@
-﻿namespace MyLedgerApp.Domain
+﻿namespace MyLedgerApp.Domain.Entities
 {
     public enum TransactionType
     {

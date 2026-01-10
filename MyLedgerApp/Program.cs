@@ -1,7 +1,7 @@
 
 using System.Text.Json.Serialization;
-using MyLedgerApp.Repositories;
-using MyLedgerApp.Services;
+using MyLedgerApp.Application.Services;
+using MyLedgerApp.Infrastructure.Repositories;
 
 namespace MyLedgerApp
 {

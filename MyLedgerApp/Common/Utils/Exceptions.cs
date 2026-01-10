@@ -1,4 +1,4 @@
-﻿namespace MyLedgerApp.Utils
+﻿namespace MyLedgerApp.Common.Utils
 {
     public class Exceptions
     {

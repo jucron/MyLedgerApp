@@ -1,7 +1,7 @@
 ﻿using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain;
+using MyLedgerApp.Domain.Entities;
 
-namespace MyLedgerApp.Services
+namespace MyLedgerApp.Application.Services
 {
     public interface IUserService
     {

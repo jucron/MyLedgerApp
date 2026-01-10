@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Services;
-using MyLedgerApp.Utils;
-using static MyLedgerApp.Utils.Exceptions;
+using MyLedgerApp.Application.Services;
+using MyLedgerApp.Common.Utils;
+using static MyLedgerApp.Common.Utils.Exceptions;
 
-namespace MyLedgerApp.Controllers
+namespace MyLedgerApp.Api.v1.Controllers
 {
     /*
      * endpoints:
