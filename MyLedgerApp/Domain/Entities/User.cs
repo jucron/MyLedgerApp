@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace MyLedgerApp.Domain.Entities
+﻿namespace MyLedgerApp.Domain.Entities
 {
     public class User
     {

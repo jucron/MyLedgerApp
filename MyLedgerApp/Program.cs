@@ -1,5 +1,7 @@
 
+using System.Reflection;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi;
 using MyLedgerApp.Application.Middlewares;
 using MyLedgerApp.Common.Extentions;
 
@@ -17,14 +19,14 @@ namespace MyLedgerApp
 
             // Swagger
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerConfig(builder.Configuration);
 
             // App Services
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices();
 
-            builder.Services.AddAuthSetup(builder.Configuration);
-            
+            builder.Services.AddAuthConfig(builder.Configuration);
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -33,7 +35,7 @@ namespace MyLedgerApp
                 app.UseSwaggerUI();
             }
 
-            app.UseMiddleware<ExceptionHandler>();
+            app.UseMiddleware<ApplicationMiddleware>();
 
             app.UseHttpsRedirection();
 

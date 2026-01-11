@@ -10,13 +10,13 @@ namespace MyLedgerApp.Application.Services.Auth
 {
     public class AuthService : IAuthService
     {
-        private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly JWTHelper _jwtHelper;
 
         public AuthService(IConfiguration configuration, IUserRepository userRepository)
         {
-            _configuration = configuration;
             _userRepository = userRepository;
+            _jwtHelper = new JWTHelper(configuration);
         }
 
         public LoginResponseDTO Authenticate(LoginRequest request)
@@ -25,7 +25,7 @@ namespace MyLedgerApp.Application.Services.Auth
             var userFromRepo = _userRepository.GetUserByUsername(request.Username);
             ValidateUserCredentials(request.Password, userFromRepo);
 
-            var token = GenerateToken(request.Username);
+            var token = _jwtHelper.GenerateToken(request.Username);
 
             return new LoginResponseDTO
             {
@@ -34,24 +34,31 @@ namespace MyLedgerApp.Application.Services.Auth
             };
         }
 
-        private SecurityToken GenerateToken(string username)
-        {
-            var keyString = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured.");
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(keyString));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            
-            return new JwtSecurityToken(
-                expires: DateTime.UtcNow.AddMinutes(30),
-                claims: new[] { new Claim(ClaimTypes.Name, username) },
-                signingCredentials: creds
-            );
-
-        }
-
         private static void ValidateUserCredentials(string password, User? user)
         {
             if (user == null || !user.Credential.VerifyPassword(password))
                 throw new UnauthorizedAccessException("Invalid username or password.");
+
+        }
+
+        public LoginResponseDTO RefreshToken(string token)
+        {
+            var remaining = _jwtHelper.GetTimeRemaining(token);
+            var tokenExpMinutesLimit = _jwtHelper.TokenExpireMinutes/3;
+
+            if (remaining > TimeSpan.FromMinutes(tokenExpMinutesLimit))
+               throw new ArgumentException("Token is still valid.");
+
+            var username = _jwtHelper.GetClaim(token, ClaimTypes.Name) ?? throw new UnauthorizedAccessException("Invalid token.");
+
+            var refreshedToken = _jwtHelper.GenerateToken(username);
+
+            return new LoginResponseDTO
+            {
+                Username = username,
+                Token = new JwtSecurityTokenHandler().WriteToken(refreshedToken)
+            };
+
 
         }
     }
