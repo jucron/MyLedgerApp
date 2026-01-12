@@ -24,7 +24,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns>A token with expire time.</returns>
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public ActionResult<LoginResponseDTO> Login([FromBody] LoginRequest request)
         {
             LoginValidator.Run(request);
 
@@ -34,14 +34,17 @@ namespace MyLedgerApp.Api.v1.Controllers
         }
 
         /// <summary>
-        /// Refresh an existing Token
+        /// Refresh the session, if the current Token expires in 5 minutes or less.
         /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
+        /// <returns>A token with expire time.</returns>
         [HttpPost("refresh")]
-        public IActionResult Refresh([FromBody] string token )
+        public ActionResult<LoginResponseDTO> Refresh()
         {
-            LoginResponseDTO response = _authService.RefreshToken(token);
+            var authHeader = Request.Headers.Authorization.FirstOrDefault();
+
+            var refreshToken = authHeader?.Replace("Bearer ", "") ?? "";
+
+            var response = _authService.RefreshToken(refreshToken);
 
             return Ok(response);
         }

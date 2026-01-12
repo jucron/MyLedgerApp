@@ -44,10 +44,9 @@ namespace MyLedgerApp.Application.Services.Auth
         public LoginResponseDTO RefreshToken(string token)
         {
             var remaining = _jwtHelper.GetTimeRemaining(token);
-            var tokenExpMinutesLimit = _jwtHelper.TokenExpireMinutes/3;
 
-            if (remaining > TimeSpan.FromMinutes(tokenExpMinutesLimit))
-               throw new ArgumentException("Token is still valid.");
+            if (remaining > TimeSpan.FromMinutes(5))
+               throw new ArgumentException("Token is still valid. Please refresh when token expires in 5 minutes or less.");
 
             var username = _jwtHelper.GetClaim(token, ClaimTypes.Name) ?? throw new UnauthorizedAccessException("Invalid token.");
 

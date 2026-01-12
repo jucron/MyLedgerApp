@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.OpenApi;
+﻿using MyLedgerApp.Application.Documentation;
 using MyLedgerApp.Application.Services.Auth;
 
 
@@ -27,20 +26,8 @@ namespace MyLedgerApp.Common.Extentions
         /// <returns></returns>
         public static IServiceCollection AddSwaggerConfig(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddSwaggerGen(c =>
-            {
-                var version = configuration["App:ApiVersion"] ?? "v1";
-                c.SwaggerDoc(version, new OpenApiInfo
-                {
-                    Title = "My Ledger Application",
-                    Version = version,
-                    Description = "A Ledger Application to manage your transactions."
-                });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
+            var apiVersion = configuration["App:ApiVersion"] ?? "v1";
+            services.AddSwaggerGen(c => SwaggerConfig.ConfigSwaggerOptions(apiVersion, c));
             return services;
         }
     }
