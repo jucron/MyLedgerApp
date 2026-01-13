@@ -45,5 +45,6 @@ namespace MyLedgerApp.Application.Services.Auth
 
             return jwt.ValidTo - DateTime.UtcNow;
         }
+    
     }
 }

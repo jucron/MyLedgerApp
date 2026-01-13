@@ -1,100 +1,76 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Application.Services;
-using MyLedgerApp.Common.Utils;
-using static MyLedgerApp.Common.Utils.Exceptions;
+using MyLedgerApp.Application.Services.Transactions;
+using MyLedgerApp.Application.Validation;
+using MyLedgerApp.Application.Validation.User;
 
 namespace MyLedgerApp.Api.v1.Controllers
 {
-    /*
-     * endpoints:
-     * - GET api/v1/transactions
-     * - GET api/v1/transactions/{id}
-     * - POST api/v1/transactions
-     * - PUT api/v1/transactions/{id}
-     * - DELETE api/v1/transactions/{id}
-     * */
-
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/transactions")]
+    [Authorize]
     public class TransactionController : ControllerBase
     {
-        private readonly ILogger<TransactionController> _logger;
         private readonly ITransactionService _transactionService;
 
-        public TransactionController(ILogger<TransactionController> logger, ITransactionService transactionService)
+        public TransactionController(ITransactionService transactionService)
         {
-            _logger = logger;
             _transactionService = transactionService;
         }
 
+        /// <summary>
+        /// Get all transactions, belonging to a Client.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/v1/transactions")]
-        public ActionResult<IEnumerable<TransactionDTO>> GetTransactions()
+        [Route("")]
+        public ActionResult<IEnumerable<TransactionDTO>> GetTransactions([FromQuery] Guid clientId)
         {
-            try
-            {
-                return Ok(_transactionService.GetAllTransactions());
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(clientId);
+            return Ok(_transactionService.GetTransactions(clientId));
+        }
 
-        }
+        /// <summary>
+        /// Get a single Transaction.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/v1/transactions/{id}")]
-        public ActionResult<TransactionDTO> GetTransaction(Guid id)
+        [Route("{id}")]
+        public ActionResult<TransactionDTO> GetTransaction([FromQuery] Guid id)
         {
-            try
-            {
-                return Ok(_transactionService.GetTransactionById(id));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            return Ok(_transactionService.GetTransactionById(id));
         }
+
+        /// <summary>
+        /// Add a new Transaction.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("api/v1/transactions")]
+        [Route("")]
         public ActionResult<TransactionDTO> AddTransaction(TransactionRequest request)
         {
-            try
-            {
-                return Ok(_transactionService.AddTransaction(request));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
-
+            AddTransactionValidator.Run(request);
+            var transaction = _transactionService.AddTransaction(request);
+            return CreatedAtAction(nameof(GetTransaction), transaction);
         }
 
+        /// <summary>
+        /// Delete an existing Transaction.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
-        [Route("api/v1/transactions/{id}")]
+        [Route("{id}")]
         public ActionResult<TransactionDTO> DeleteTransaction(Guid id)
         {
-            try
-            {
-                _transactionService.DeleteTransaction(id);
-                return Ok();
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            _transactionService.DeleteTransaction(id);
+            return Ok();
         }
     }
 }

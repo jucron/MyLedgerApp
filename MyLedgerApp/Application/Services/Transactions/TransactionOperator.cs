@@ -1,6 +1,6 @@
 ﻿using MyLedgerApp.Domain.Entities;
 
-namespace MyLedgerApp.Common.Utils
+namespace MyLedgerApp.Application.Services.Transactions
 {
     public class TransactionOperator
     {

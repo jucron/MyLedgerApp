@@ -1,11 +1,10 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.Repositories;
 using static MyLedgerApp.Common.Utils.Exceptions;
 
-namespace MyLedgerApp.Application.Services
+namespace MyLedgerApp.Application.Services.Transactions
 {
     public class TransactionService : ITransactionService
     {
@@ -61,9 +60,9 @@ namespace MyLedgerApp.Application.Services
             return TransactionMapper.MapTransactionToTransactionDTO(transaction) ;
         }
 
-        public IEnumerable<TransactionDTO> GetAllTransactions()
+        public IEnumerable<TransactionDTO> GetTransactions(Guid clientId)
         {
-            return _transactionRepository.GetAllTransactions()
+            return _transactionRepository.GetTransactionsByClientId(clientId)
                 .Select(t => TransactionMapper.MapTransactionToTransactionDTO(t));
         }
     }

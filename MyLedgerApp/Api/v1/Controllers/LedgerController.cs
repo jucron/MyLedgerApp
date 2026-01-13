@@ -1,100 +1,75 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Services;
-using MyLedgerApp.Common.Utils;
-using static MyLedgerApp.Common.Utils.Exceptions;
+using MyLedgerApp.Application.Validation;
+using MyLedgerApp.Application.Validation.User;
 
 namespace MyLedgerApp.Api.v1.Controllers
 {
-    /*
-     * endpoints:
-     * - GET api/v1/ledgers
-     * - GET api/v1/ledgers/{id}
-     * - POST api/v1/ledgers
-     * - PUT api/v1/ledgers/{id}
-     * - DELETE api/v1/ledgers/{id}
-     * */
-
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/ledgers")]
+    [Authorize]
     public class LedgerController : ControllerBase
     {
-        private readonly ILogger<LedgerController> _logger;
         private readonly ILedgerService _ledgerService;
 
-        public LedgerController(ILogger<LedgerController> logger, ILedgerService ledgerService)
+        public LedgerController(ILedgerService ledgerService)
         {
-            _logger = logger;
             _ledgerService = ledgerService;
         }
 
+        /// <summary>
+        /// Get all Ledgers.
+        /// </summary>
+        /// <param name="isIncludeTransactions"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/v1/ledgers")]
-        public ActionResult<IEnumerable<LedgerDTO>> GetLedgers([FromQuery] bool isFullResponse)
+        [Route("")]
+        public ActionResult<IEnumerable<LedgerDTO>> GetLedgers([FromQuery] bool isIncludeTransactions)
         {
-            try
-            {
-                return Ok(_ledgerService.GetAllLedgers(isFullResponse));
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
-            
+            return Ok(_ledgerService.GetAllLedgers(isIncludeTransactions));
         }
+
+        /// <summary>
+        /// Get a single Ledger.
+        /// </summary>
+        /// <param name="isIncludeTransactions"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/v1/ledgers/{id}")]
-        public ActionResult<LedgerDTO> GetLedger([FromQuery] bool isFullResponse, Guid id)
+        [Route("{id}")]
+        public ActionResult<LedgerDTO> GetLedger([FromQuery] bool isIncludeTransactions, Guid id)
         {
-            try
-            {
-                return Ok(_ledgerService.GetLedgerById(id, isFullResponse));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            return Ok(_ledgerService.GetLedgerById(id, isIncludeTransactions));
         }
+
+        /// <summary>
+        /// Add a new Ledger into the system.
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("api/v1/ledgers")]
-        public ActionResult<LedgerDTO> AddLedger(LedgerRequest user)
+        [Route("")]
+        public ActionResult<LedgerDTO> AddLedger(LedgerRequest req)
         {
-            try
-            {
-                return Ok(_ledgerService.AddLedger(user));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
-           
+            AddLedgerValidator.Run(req);
+            return Ok(_ledgerService.AddLedger(req));
         }
-       
+
+        /// <summary>
+        /// Delete a Ledger from the system.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
-        [Route("api/v1/ledgers/{id}")]
+        [Route("{id}")]
         public ActionResult<LedgerDTO> DeleteLedger(Guid id)
         {
-            try
-            {
-                _ledgerService.DeleteLedger(id);
-                return Ok();
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            _ledgerService.DeleteLedger(id);
+            return Ok();
         }
     }
 }

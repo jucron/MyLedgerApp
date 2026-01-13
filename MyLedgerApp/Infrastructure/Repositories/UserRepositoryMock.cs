@@ -5,6 +5,7 @@ namespace MyLedgerApp.Infrastructure.Repositories
     public class UserRepositoryMock : IUserRepository
     {
         private readonly List<User> _users;
+        private readonly Lock _locker = new();
 
         public UserRepositoryMock()
         {
@@ -13,16 +14,20 @@ namespace MyLedgerApp.Infrastructure.Repositories
 
         private static List<User> MockInitialData()
         {
+            var hashPass123 = "$2a$11$z5mW0e5m8AGiIymcDLUUae7XIZLUnm4zz8uol8asbLYHwy0bUncLW";
             return
             [
-                new Client { Email = "john@email.com", Name = "John"},
-                new Employee { Email = "larry@email.com", Name = "Larry", serviceCenter = "NY"},
+                new Client { Email = "john@email.com", Name = "John", Credential = new() { Username = "john", PasswordHash = hashPass123 } },
+                new Employee { Email = "larry@email.com", Name = "Larry", serviceCenter = "NY", Credential = new() { Username = "larry", PasswordHash = hashPass123 }},
             ];
         }
 
         public bool DeleteUser(User user)
         {
-            return _users.Remove(user);
+            lock (_locker)
+            {
+                return _users.Remove(user);
+            }
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -37,7 +42,10 @@ namespace MyLedgerApp.Infrastructure.Repositories
 
         public void AddUser(User user)
         {
-            _users.Add(user);
+            lock (_locker)
+            {
+                _users.Add(user);
+            }
         }
 
         public User? GetUserByUsername(string username)

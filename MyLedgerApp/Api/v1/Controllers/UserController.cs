@@ -4,9 +4,7 @@ using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Services;
 using MyLedgerApp.Application.Validation;
 using MyLedgerApp.Application.Validation.User;
-using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities;
-using static MyLedgerApp.Common.Utils.Exceptions;
 
 namespace MyLedgerApp.Api.v1.Controllers
 {

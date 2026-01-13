@@ -1,4 +1,5 @@
-﻿using MyLedgerApp.Api.v1.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Domain.Entities;
 
 namespace MyLedgerApp.Api.v1.Mappers
@@ -50,7 +51,12 @@ namespace MyLedgerApp.Api.v1.Mappers
             {
                 Email = userRequest.Email,
                 Name = userRequest.Name,
-                serviceCenter = userRequest.ServiceCenter ?? "not defined."
+                serviceCenter = userRequest.ServiceCenter ?? "not defined.",
+                Credential = new Credential()
+                {
+                    Username = userRequest.Username,
+                    StorePassword = userRequest.Password
+                }
             };
         }
 
@@ -60,6 +66,11 @@ namespace MyLedgerApp.Api.v1.Mappers
             {
                 Email = userRequest.Email,
                 Name = userRequest.Name,
+                Credential = new Credential()
+                {
+                    Username = userRequest.Username,
+                    StorePassword = userRequest.Password
+                }
             };
         }
     }

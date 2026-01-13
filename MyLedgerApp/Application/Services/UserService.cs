@@ -1,5 +1,6 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
+using MyLedgerApp.Application.Services.Auth;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.Repositories;
 using static MyLedgerApp.Common.Utils.Exceptions;
@@ -16,6 +17,7 @@ namespace MyLedgerApp.Application.Services
 
         public UserDTO AddUser(UserRequest request)
         {
+            //todo: check if user already exists
             User user = UserMapper.MapUserRequestToUser(request);
             _userRepository.AddUser(user);
             return UserMapper.MapUserToUserDTO(user);

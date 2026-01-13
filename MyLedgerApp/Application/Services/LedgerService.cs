@@ -21,10 +21,10 @@ namespace MyLedgerApp.Application.Services
             var clientOwner = _userRepository.GetUserById(request.ClientId);
             var employee = _userRepository.GetUserById(request.EmployeeId);
 
-            if (clientOwner == null)
+            if (clientOwner is null)
                 throw new UserNotFoundException(request.ClientId);
 
-            if (employee == null)
+            if (employee is null)
                 throw new UserNotFoundException(request.EmployeeId);
 
             if (clientOwner is Employee)
@@ -55,17 +55,18 @@ namespace MyLedgerApp.Application.Services
             _ledgerRepository.DeleteLedger(ledgerToDelete);
         }
 
-        public LedgerDTO GetLedgerById(Guid id, bool isFullResponse)
+        public LedgerDTO GetLedgerById(Guid id, bool isIncludeTransactions)
         {
             var ledgerToReturn = _ledgerRepository.GetLedgerById(id) ??
                 throw new LedgerNotFoundException(id);
 
-            return LedgerMapper.MapLedgerToLedgerDTO(ledgerToReturn, isFullResponse);
+            return LedgerMapper.MapLedgerToLedgerDTO(ledgerToReturn, isIncludeTransactions);
         }
 
-        public IEnumerable<LedgerDTO> GetAllLedgers(bool isFullResponse)
+        public IEnumerable<LedgerDTO> GetAllLedgers(bool isIncludeTransactions)
         {
-            return _ledgerRepository.GetAllLedgers().Select(l => LedgerMapper.MapLedgerToLedgerDTO(l, isFullResponse));
+            return _ledgerRepository.GetAllLedgers()
+                .Select(l => LedgerMapper.MapLedgerToLedgerDTO(l, isIncludeTransactions));
         }
 
 

@@ -13,19 +13,9 @@ namespace MyLedgerApp.Application.Validation.User
             RuleFor(l => l.Password).NotEmpty();
             RuleFor(l => l.Email).NotEmpty().EmailAddress();
             RuleFor(l => l.Name).NotEmpty();
-            RuleFor(l => l.UserType).NotEmpty();
-            RuleFor(l => ServiceCenterNecessary(l.ServiceCenter, l.UserType));
-        }
-
-        /// <summary>
-        /// SC only necessary for employees.
-        /// </summary>
-        /// <param name="serviceCenter"></param>
-        /// <param name="userType"></param>
-        /// <returns></returns>
-        private static bool ServiceCenterNecessary(string? serviceCenter, UserType userType)
-        {
-            return userType == UserType.Employee && !string.IsNullOrWhiteSpace(serviceCenter);
+            RuleFor(l => l.ServiceCenter).NotEmpty()
+                .When(l => l.UserType == UserType.Employee)
+                .WithMessage("SC necessary for employees.");
         }
     }
 }

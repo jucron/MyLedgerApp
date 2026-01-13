@@ -2,7 +2,6 @@
 {
     public class Employee: User
     {
-        public string serviceCenter;
-        
+        public required string serviceCenter;
     }
 }

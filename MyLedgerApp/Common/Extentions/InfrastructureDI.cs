@@ -11,9 +11,9 @@ namespace MyLedgerApp.Common.Extentions
         /// <returns></returns>
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddScoped<ITransactionRepository, TransactionRepositoryMock>();
-            services.AddScoped<IUserRepository, UserRepositoryMock>();
-            services.AddScoped<ILedgerRepository, LedgerRepositoryMock>();
+            services.AddSingleton<ITransactionRepository, TransactionRepositoryMock>();
+            services.AddSingleton<IUserRepository, UserRepositoryMock>();
+            services.AddSingleton<ILedgerRepository, LedgerRepositoryMock>();
             return services;
         }
     }

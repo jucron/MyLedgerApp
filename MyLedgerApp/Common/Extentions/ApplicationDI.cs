@@ -1,5 +1,6 @@
 ﻿using MyLedgerApp.Application.Services;
 using MyLedgerApp.Application.Services.Auth;
+using MyLedgerApp.Application.Services.Transactions;
 
 namespace MyLedgerApp.Common.Extentions
 {

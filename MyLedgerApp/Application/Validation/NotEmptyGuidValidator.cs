@@ -6,7 +6,8 @@ namespace MyLedgerApp.Application.Validation
     {
         protected override void SetValidations()
         {
-            RuleFor(guid => guid).NotEmpty();
+            RuleFor(guid => guid).NotEmpty()
+                .WithMessage("Guid cannot be empty");
         }
     }
 }

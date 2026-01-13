@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using FluentValidation;
+using static MyLedgerApp.Common.Utils.Exceptions;
 
 namespace MyLedgerApp.Application.Handlers
 {
@@ -17,6 +18,14 @@ namespace MyLedgerApp.Application.Handlers
                 UnauthorizedAccessException ua => (
                     HttpStatusCode.Unauthorized,
                     ua.Message
+                ),
+                ResourceNotFoundException re => (
+                    HttpStatusCode.NotFound,
+                    re.Message
+                ),
+                InvalidOperationException io => (
+                    HttpStatusCode.Forbidden, 
+                    io.Message
                 ),
                 ArgumentException ae => (
                     HttpStatusCode.BadRequest,
