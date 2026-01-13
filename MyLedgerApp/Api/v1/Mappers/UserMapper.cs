@@ -16,6 +16,7 @@ namespace MyLedgerApp.Api.v1.Mappers
             return new UserDTO
             {
                 Id = employee.Id,
+                Username = employee.Credential.Username,
                 Name = employee.Name,
                 Email = employee.Email,
                 UserType = UserType.Employee,
@@ -29,6 +30,7 @@ namespace MyLedgerApp.Api.v1.Mappers
             return new UserDTO
             {
                 Id = client.Id,
+                Username = client.Credential.Username,
                 Name = client.Name,
                 Email = client.Email,
                 Ledgers = client.Ledgers.Select(l => l.Id).ToList(),

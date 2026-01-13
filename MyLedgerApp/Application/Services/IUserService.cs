@@ -8,7 +8,7 @@ namespace MyLedgerApp.Application.Services
         UserDTO AddUser(UserRequest request);
         void DeleteUser(Guid id);
         UserDTO GetUserById(Guid id);
-        IEnumerable<UserDTO> GetUsers(UserType? type);
+        IEnumerable<UserDTO> GetUsers(UserType type);
         UserDTO UpdateUser(Guid id, UserDTO user);
     }
 }

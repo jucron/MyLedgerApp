@@ -1,7 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.Repositories;

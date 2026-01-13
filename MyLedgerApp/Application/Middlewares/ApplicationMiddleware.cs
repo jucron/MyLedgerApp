@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Text.Json;
-using FluentValidation;
+﻿using System.Text.Json;
 using MyLedgerApp.Application.Handlers;
 
 namespace MyLedgerApp.Application.Middlewares

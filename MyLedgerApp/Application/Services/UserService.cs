@@ -37,14 +37,13 @@ namespace MyLedgerApp.Application.Services
             return UserMapper.MapUserToUserDTO(userToReturn);
         }
 
-        public IEnumerable<UserDTO> GetUsers(UserType? type)
+        public IEnumerable<UserDTO> GetUsers(UserType type)
         {
-            bool isClient = type == UserType.Client;
-            bool isEmployee = type == UserType.Employee;
+            bool isClient = type is UserType.Client;
 
             return _userRepository.GetAllUsers()
-                .Where(u => isClient ? u is Client : isEmployee ? u is Employee : true)
-                .Select(u => UserMapper.MapUserToUserDTO(u));
+                .Where(u => isClient ? u is Client : u is Employee)
+                .Select(UserMapper.MapUserToUserDTO);
         }
 
         public UserDTO UpdateUser(Guid id, UserDTO user)

@@ -5,6 +5,8 @@ namespace MyLedgerApp.Api.v1.Models
     public class UserRequest
     {
 
+        public required string Username { get; set; }
+        public required string Password { get; set; }
         public required string Name { get; set; }
 
         public required string Email { get; set; }

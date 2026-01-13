@@ -1,23 +1,18 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Services;
+using MyLedgerApp.Application.Validation;
+using MyLedgerApp.Application.Validation.User;
 using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities;
 using static MyLedgerApp.Common.Utils.Exceptions;
 
 namespace MyLedgerApp.Api.v1.Controllers
 {
-    /*
-     * endpoints:
-     * - GET api/v1/users
-     * - GET api/v1/users/{id}
-     * - POST api/v1/users
-     * - PUT api/v1/users/{id}
-     * - DELETE api/v1/users/{id}
-     * */
-
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/users")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -29,85 +24,74 @@ namespace MyLedgerApp.Api.v1.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Get all Users.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/v1/users")]
-        public ActionResult<IEnumerable<UserDTO>> GetUsers([FromQuery] UserType? type)
+        [Route("")]
+        public ActionResult<IEnumerable<UserDTO>> GetUsers([FromQuery] UserType type)
         {
-            try
-            {
-                return Ok(_userService.GetUsers(type));
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
-            
+            NotNullEnumValidator.Run(type);
+            return Ok(_userService.GetUsers(type));
         }
+
+        /// <summary>
+        /// Get a single User.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/v1/users/{id}")]
+        [Route("{id}")]
         public ActionResult<UserDTO> GetUser(Guid id)
         {
-            try
-            {
-                return Ok(_userService.GetUserById(id));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            return Ok(_userService.GetUserById(id));
         }
+
+        /// <summary>
+        /// [OPEN] Add a single User. UserType can be either Employee or Client.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("api/v1/users")]
+        [Route("")]
+        [AllowAnonymous]
         public ActionResult<UserDTO> AddUser(UserRequest request)
         {
-            try
-            {
-                return Ok(_userService.AddUser(request));
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
-           
+            AddUserValidator.Run(request);
+            return Ok(_userService.AddUser(request));
         }
+
+        /// <summary>
+        /// Update a single User.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPut]
-        [Route("api/v1/users/{id}")]
+        [Route("{id}")]
         public ActionResult<UserDTO> UpdateUser(Guid id, UserDTO user)
         {
-            try
-            {
-                return Ok(_userService.UpdateUser(id,user));
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            UpdateUserValidator.Run(user);
+            return Ok(_userService.UpdateUser(id,user));
+
         }
+
+        /// <summary>
+        /// Delete a single User.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
-        [Route("api/v1/users/{id}")]
-        public ActionResult<UserDTO> DeleteUser(Guid id)
+        [Route("{id}")]
+        public ActionResult DeleteUser(Guid id)
         {
-            try
-            {
-                _userService.DeleteUser(id);
-                return Ok();
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return ErrorHandling.CreateNotFoundError(e);
-            }
-            catch (Exception e)
-            {
-                return ErrorHandling.CreateUnexpectedError(e);
-            }
+            NotEmptyGuidValidator.Run(id);
+            _userService.DeleteUser(id);
+            return Ok();
         }
     }
 }

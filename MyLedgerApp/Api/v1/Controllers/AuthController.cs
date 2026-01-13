@@ -18,7 +18,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         }
 
         /// <summary>
-        /// Login an existing User, by it's Credentials. 
+        /// [OPEN] Login an existing User, by it's Credentials.
         /// </summary>
         /// <param name="request"></param>
         /// <returns>A token with expire time.</returns>
