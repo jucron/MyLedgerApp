@@ -14,7 +14,7 @@ namespace MyLedgerApp.Api.v1.Mappers
                 Description = transaction.Description,
                 Timestamp = transaction.Timestamp,
                 Type = transaction.Type,
-                ClientName = transaction.Client.Name,
+                ClientName = transaction.Ledger?.Client?.Name ?? "unknown",
             };
         }
     }

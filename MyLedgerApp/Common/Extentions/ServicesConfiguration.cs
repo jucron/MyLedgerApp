@@ -1,5 +1,7 @@
-﻿using MyLedgerApp.Application.Documentation;
+﻿using Microsoft.EntityFrameworkCore;
+using MyLedgerApp.Application.Documentation;
 using MyLedgerApp.Application.Services.Auth;
+using MyLedgerApp.Infrastructure.DbConfig;
 
 
 namespace MyLedgerApp.Common.Extentions
@@ -28,6 +30,20 @@ namespace MyLedgerApp.Common.Extentions
         {
             var apiVersion = configuration["App:ApiVersion"] ?? "v1";
             services.AddSwaggerGen(c => SwaggerConfig.ConfigSwaggerOptions(apiVersion, c));
+            return services;
+        }
+        /// <summary>
+        /// Custom extension in <see cref="IServiceCollection"/>, to configure App's Database Configuration.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddDatabaseConfig(this IServiceCollection services, ConfigurationManager configuration)
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection")));
+
             return services;
         }
     }

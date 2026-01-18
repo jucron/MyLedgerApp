@@ -2,7 +2,7 @@
 {
     public class Employee: User
     {
-        public required string serviceCenter;
-        public List<Ledger> Ledgers { get; set; } = [];
+        public string ServiceCenter { get; set; } = null!;
+        public ICollection<Ledger> Ledgers { get; set; } = [];
     }
 }

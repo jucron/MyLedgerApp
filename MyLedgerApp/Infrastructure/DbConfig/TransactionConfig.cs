@@ -14,10 +14,16 @@ namespace MyLedgerApp.Infrastructure.DbConfig
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.Type).IsRequired();
+
             builder.HasOne(x => x.Ledger)
                 .WithMany(x => x.Transactions)
                 .HasForeignKey(x => x.LedgerId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(x => x.LedgerId);
 
         }
     }

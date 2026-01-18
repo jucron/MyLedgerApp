@@ -9,7 +9,7 @@
         public string Description { get; set; } = "";
 
         public Guid LedgerId { get; set; }
-        public Ledger Ledger { get; set; }
+        public Ledger Ledger { get; set; } = null!;
 
     }
 }

@@ -2,6 +2,6 @@
 {
     public class Client: User
     {
-        public List<Ledger> Ledgers { get; set; } = [];
+        public ICollection<Ledger> Ledgers { get; set; } = [];
     }
 }

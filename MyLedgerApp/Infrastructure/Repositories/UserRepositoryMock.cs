@@ -18,7 +18,7 @@ namespace MyLedgerApp.Infrastructure.Repositories
             return
             [
                 new Client { Email = "john@email.com", Name = "John", Credential = new() { Username = "john", PasswordHash = hashPass123 } },
-                new Employee { Email = "larry@email.com", Name = "Larry", serviceCenter = "NY", Credential = new() { Username = "larry", PasswordHash = hashPass123 }},
+                new Employee { Email = "larry@email.com", Name = "Larry", ServiceCenter = "NY", Credential = new() { Username = "larry", PasswordHash = hashPass123 }},
             ];
         }
 

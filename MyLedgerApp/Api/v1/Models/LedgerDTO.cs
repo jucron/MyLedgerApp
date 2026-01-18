@@ -8,7 +8,6 @@
         public Guid EmployeeId { get; set; }
 
         public List<TransactionDTO>? Transactions { get; set; }
-        public List<Guid>? TransactionsId { get; set; }
 
     }
 }

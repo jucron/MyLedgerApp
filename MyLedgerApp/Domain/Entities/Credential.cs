@@ -2,7 +2,7 @@
 {
     public class Credential
     {
-        public required string Username { get; set; }
+        public string Username { get; set; } = null!;
         private string PasswordHash { get; set; } = null!;
 
         public string StorePassword

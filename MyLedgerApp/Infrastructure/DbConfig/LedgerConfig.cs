@@ -23,13 +23,18 @@ namespace MyLedgerApp.Infrastructure.DbConfig
             builder.HasOne<Client>(x => x.Client)
                 .WithMany(x => x.Ledgers)
                 .HasForeignKey(x => x.ClientId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Employee>
                 (x => x.Employee)
                 .WithMany(x => x.Ledgers)
                 .HasForeignKey(x => x.EmployeeId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(x => x.ClientId);
+            builder.HasIndex(x => x.EmployeeId);
 
         }
     }

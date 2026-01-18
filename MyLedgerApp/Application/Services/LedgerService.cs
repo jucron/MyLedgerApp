@@ -16,57 +16,47 @@ namespace MyLedgerApp.Application.Services
             _userRepository = userRepository;
         }
 
-        public LedgerDTO AddLedger(LedgerRequest request)
+        public async Task<LedgerDTO> AddLedger(LedgerRequest request, CancellationToken ct)
         {
-            var clientOwner = _userRepository.GetUserById(request.ClientId);
-            var employee = _userRepository.GetUserById(request.EmployeeId);
-
-            if (clientOwner is null)
+            var clientOwner = _userRepository.GetUserById(request.ClientId) ??
                 throw new UserNotFoundException(request.ClientId);
 
-            if (employee is null)
+            var employee = _userRepository.GetUserById(request.EmployeeId) ??
                 throw new UserNotFoundException(request.EmployeeId);
 
-            if (clientOwner is Employee)
+            if (clientOwner is not Client)
                 throw new InvalidOperationException($"User {clientOwner.Name} should be a Client");
 
-            if (employee is Client)
+            if (employee is not Employee)
                 throw new InvalidOperationException($"User {employee.Name} should be an Employee");
 
             // Add Client to the Ledger 
             Ledger ledgerToBeAdded = new() { Client = (Client)clientOwner, Employee = (Employee)employee };
 
-            // Add Ledger to the Client
-            ((Client)clientOwner).Ledgers.Add(ledgerToBeAdded);
-
-            _ledgerRepository.AddLedger(ledgerToBeAdded);
-            return LedgerMapper.MapLedgerToLedgerDTO(ledgerToBeAdded, false);
+            await _ledgerRepository.AddLedger(ledgerToBeAdded, ct);
+            return LedgerMapper.MapLedgerToLedgerDTO(ledgerToBeAdded);
         }
 
-        public void DeleteLedger(Guid id)
+        public async Task DeleteLedger(Guid id, CancellationToken ct)
         {
-            var ledgerToDelete = _ledgerRepository.GetLedgerById(id) ??
+            var ledgerToDelete = await _ledgerRepository.GetLedgerById(id, includeTransactions: false, ct) ??
                 throw new LedgerNotFoundException(id);
 
-            var clientOwner = _userRepository.GetUserById(ledgerToDelete.Client.Id) ??
-                throw new UserNotFoundException(ledgerToDelete.Client.Id);
-           
-            ((Client)clientOwner).Ledgers?.Remove(ledgerToDelete);
-            _ledgerRepository.DeleteLedger(ledgerToDelete);
+            await _ledgerRepository.DeleteLedger(ledgerToDelete, ct);
         }
 
-        public LedgerDTO GetLedgerById(Guid id, bool isIncludeTransactions)
+        public async Task<LedgerDTO> GetLedgerById(Guid id, bool includeTransactions, CancellationToken ct)
         {
-            var ledgerToReturn = _ledgerRepository.GetLedgerById(id) ??
+            var ledgerToReturn = await _ledgerRepository.GetLedgerById(id, includeTransactions, ct) ??
                 throw new LedgerNotFoundException(id);
 
-            return LedgerMapper.MapLedgerToLedgerDTO(ledgerToReturn, isIncludeTransactions);
+            return LedgerMapper.MapLedgerToLedgerDTO(ledgerToReturn);
         }
 
-        public IEnumerable<LedgerDTO> GetAllLedgers(bool isIncludeTransactions)
+        public async Task<IEnumerable<LedgerDTO>> GetAllLedgers(bool includeTransactions, CancellationToken ct)
         {
-            return _ledgerRepository.GetAllLedgers()
-                .Select(l => LedgerMapper.MapLedgerToLedgerDTO(l, isIncludeTransactions));
+            var list = await _ledgerRepository.GetAllLedgers(includeTransactions,ct);
+            return list.Select(l => LedgerMapper.MapLedgerToLedgerDTO(l));
         }
 
 

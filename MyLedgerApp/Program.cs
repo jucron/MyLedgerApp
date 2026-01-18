@@ -10,19 +10,24 @@ namespace MyLedgerApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var services = builder.Services;
+            var configuration = builder.Configuration;
+
             // Controllers
-            builder.Services.AddControllers()
+            services.AddControllers()
                 .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
             // Swagger
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerConfig(builder.Configuration);
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerConfig(configuration);
 
             // App Services
-            builder.Services.AddApplicationServices();
-            builder.Services.AddInfrastructureServices();
+            services.AddApplicationServices();
+            services.AddInfrastructureServices();
 
-            builder.Services.AddAuthConfig(builder.Configuration);
+            services.AddAuthConfig(configuration);
+
+            services.AddDatabaseConfig(configuration);
 
             var app = builder.Build();
 

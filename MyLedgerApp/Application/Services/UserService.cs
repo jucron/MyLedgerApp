@@ -60,7 +60,7 @@ namespace MyLedgerApp.Application.Services
 
             if (userToUpdate is Employee employee)
             {
-                employee.serviceCenter = user.ServiceCenter ?? employee.serviceCenter;
+                employee.ServiceCenter = user.ServiceCenter ?? employee.ServiceCenter;
             }
 
             return UserMapper.MapUserToUserDTO(userToUpdate);

@@ -15,6 +15,9 @@ namespace MyLedgerApp.Infrastructure.DbConfig
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.Email).IsRequired();
+
             builder
                 .HasDiscriminator<string>("UserType")
                 .HasValue<Client>("Client")

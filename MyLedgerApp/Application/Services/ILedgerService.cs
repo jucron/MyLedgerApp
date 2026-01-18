@@ -4,9 +4,9 @@ namespace MyLedgerApp.Application.Services
 {
     public interface ILedgerService
     {
-        LedgerDTO AddLedger(LedgerRequest request);
-        void DeleteLedger(Guid id);
-        LedgerDTO GetLedgerById(Guid id, bool isFullResponse);
-        IEnumerable<LedgerDTO> GetAllLedgers(bool isFullResponse);
+        Task<LedgerDTO> AddLedger(LedgerRequest request, CancellationToken cancellationToken);
+        Task DeleteLedger(Guid id, CancellationToken cancellationToken);
+        Task<LedgerDTO> GetLedgerById(Guid id, bool isFullResponse, CancellationToken cancellationToken);
+        Task<IEnumerable<LedgerDTO>> GetAllLedgers(bool isFullResponse, CancellationToken cancellationToken);
     }
 }

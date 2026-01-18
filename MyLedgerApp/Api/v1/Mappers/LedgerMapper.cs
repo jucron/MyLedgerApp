@@ -5,14 +5,13 @@ namespace MyLedgerApp.Api.v1.Mappers
 {
     public class LedgerMapper
     {
-        public static LedgerDTO MapLedgerToLedgerDTO(Ledger ledger, bool isIncludeTransactions)
+        public static LedgerDTO MapLedgerToLedgerDTO(Ledger ledger)
         {
             return new()
             {
                 Id = ledger.Id,
                 CurrentBalance = ledger.CurrentBalance,
-                Transactions = isIncludeTransactions ? ledger.Transactions.Select(t => TransactionMapper.MapTransactionToTransactionDTO(t)).ToList() : null,
-                TransactionsId = isIncludeTransactions ? null : ledger.Transactions.Select(t => t.Id).ToList(),
+                Transactions = ledger.Transactions?.Select(TransactionMapper.MapTransactionToTransactionDTO).ToList(),
                 ClientId = ledger.Client.Id,
                 EmployeeId = ledger.Employee.Id
             };

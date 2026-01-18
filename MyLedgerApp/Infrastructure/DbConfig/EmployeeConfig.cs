@@ -8,6 +8,8 @@ namespace MyLedgerApp.Infrastructure.DbConfig
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
+            builder.Property(x => x.ServiceCenter).IsRequired();
+
             builder.HasMany(c => c.Ledgers)
                 .WithOne(l => l.Employee)
                 .HasForeignKey(l => l.EmployeeId)

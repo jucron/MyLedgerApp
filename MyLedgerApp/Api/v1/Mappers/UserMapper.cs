@@ -21,7 +21,7 @@ namespace MyLedgerApp.Api.v1.Mappers
                 Name = employee.Name,
                 Email = employee.Email,
                 UserType = UserType.Employee,
-                ServiceCenter = employee.serviceCenter
+                ServiceCenter = employee.ServiceCenter
             };
         }
 
@@ -51,7 +51,7 @@ namespace MyLedgerApp.Api.v1.Mappers
             {
                 Email = userRequest.Email,
                 Name = userRequest.Name,
-                serviceCenter = userRequest.ServiceCenter ?? "not defined.",
+                ServiceCenter = userRequest.ServiceCenter ?? "not defined.",
                 Credential = new Credential()
                 {
                     Username = userRequest.Username,

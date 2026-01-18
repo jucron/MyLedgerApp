@@ -2,32 +2,20 @@
 {
     public class Exceptions
     {
-        public class ResourceNotFoundException : Exception
+        public class ResourceNotFoundException(string message) : Exception(message)
         {
-            public ResourceNotFoundException(string message) : base(message)
-            {
-            }
         }
-        public class TransactionNotFoundException : ResourceNotFoundException
+        public class TransactionNotFoundException(Guid id) : 
+            ResourceNotFoundException($"Could not found any Transaction with ID {id}")
         {
-            public TransactionNotFoundException(Guid id) 
-                : base($"Could not found any Transaction with ID {id}")
-            {
-            }
         }
-        public class UserNotFoundException : ResourceNotFoundException
+        public class UserNotFoundException(Guid id) : 
+            ResourceNotFoundException($"Could not found any User with ID {id}")
         {
-            public UserNotFoundException(Guid id)
-                : base($"Could not found any User with ID {id}")
-            {
-            }
         }
-        public class LedgerNotFoundException : ResourceNotFoundException
+        public class LedgerNotFoundException(Guid id) : 
+            ResourceNotFoundException($"Could not found any Ledger with ID {id}")
         {
-            public LedgerNotFoundException(Guid id)
-                : base($"Could not found any Ledger with ID {id}")
-            {
-            }
         }
 
 
