@@ -15,53 +15,53 @@ namespace MyLedgerApp.Application.Services
             _userRepository = userRepository;
         }
 
-        public UserDTO AddUser(UserRequest request)
+        public async Task<UserDTO> AddUser(UserRequest request, CancellationToken ct)
         {
             //todo: check if user already exists
             User user = UserMapper.MapUserRequestToUser(request);
-            _userRepository.AddUser(user);
+            await _userRepository.AddUser(user, ct);
             return UserMapper.MapUserToUserDTO(user);
         }
 
-        public void DeleteUser(Guid id)
+        public async Task DeleteUser(Guid id, CancellationToken ct)
         {
-            var userToDelete = _userRepository.GetUserById(id) ??
+            var userToDelete = await _userRepository.GetUserById(id, ct) ??
                 throw new UserNotFoundException(id);
 
-            _userRepository.DeleteUser(userToDelete);
+            await _userRepository.DeleteUser(userToDelete, ct);
         }
 
-        public UserDTO GetUserById(Guid id)
+        public async Task<UserDTO> GetUserById(Guid id, CancellationToken ct)
         {
-            var userToReturn = _userRepository.GetUserById(id) ??
+            var userToReturn = await _userRepository.GetUserById(id, ct) ??
                 throw new UserNotFoundException(id);
 
             return UserMapper.MapUserToUserDTO(userToReturn);
         }
 
-        public IEnumerable<UserDTO> GetUsers(UserType type)
+        public async Task<IEnumerable<UserDTO>> GetUsers(UserType type, CancellationToken ct)
         {
-            bool isClient = type is UserType.Client;
+            var users = await _userRepository.GetAllUsers(ct);
 
-            return _userRepository.GetAllUsers()
-                .Where(u => isClient ? u is Client : u is Employee)
+            Func<User,bool> isClientOrIsEployee = type is UserType.Client ? (u) => u is Client : (u) => u is Employee;
+
+            return users
+                .Where(isClientOrIsEployee)
                 .Select(UserMapper.MapUserToUserDTO);
         }
 
-        public UserDTO UpdateUser(Guid id, UserDTO user)
+        public async Task<UserDTO> UpdateUser(Guid id, UserDTO user, CancellationToken ct)
         {
-            // Note that User's Ledgers should be edited by the specific api
-
-            var userToUpdate = _userRepository.GetUserById(id) ??
+            var userToUpdate = await _userRepository.GetUserById(id, ct) ??
                 throw new UserNotFoundException(id);
 
             userToUpdate.Name = user.Name;
             userToUpdate.Email = user.Email;
 
             if (userToUpdate is Employee employee)
-            {
                 employee.ServiceCenter = user.ServiceCenter ?? employee.ServiceCenter;
-            }
+            
+            await _userRepository.UpdateUser(userToUpdate, ct);
 
             return UserMapper.MapUserToUserDTO(userToUpdate);
         }

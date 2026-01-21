@@ -6,7 +6,7 @@ using MyLedgerApp.Infrastructure.DbConfig;
 
 namespace MyLedgerApp.Common.Extentions
 {
-    public static class ServicesConfiguration
+    public static class ServicesConfig
     {
         /// <summary>
         /// Custom extension in <see cref="IServiceCollection"/>, to configure App's Authentication Configuration.
@@ -16,7 +16,7 @@ namespace MyLedgerApp.Common.Extentions
         /// <returns></returns>
         public static IServiceCollection AddAuthConfig(this IServiceCollection services, ConfigurationManager configuration)
         {
-            AuthConfig.ConfigureAuth(services, configuration);
+            AuthConfig.ConfigureAuth(services, configuration.GetJwtSettings());
             return services;
         }
 
@@ -28,10 +28,11 @@ namespace MyLedgerApp.Common.Extentions
         /// <returns></returns>
         public static IServiceCollection AddSwaggerConfig(this IServiceCollection services, ConfigurationManager configuration)
         {
-            var apiVersion = configuration["App:ApiVersion"] ?? "v1";
+            var apiVersion = configuration.GetAppSettings().ApiVersion;
             services.AddSwaggerGen(c => SwaggerConfig.ConfigSwaggerOptions(apiVersion, c));
             return services;
         }
+
         /// <summary>
         /// Custom extension in <see cref="IServiceCollection"/>, to configure App's Database Configuration.
         /// </summary>
@@ -42,7 +43,7 @@ namespace MyLedgerApp.Common.Extentions
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")));
+                    configuration.GetDbSettings().DefaultConnection));
 
             return services;
         }

@@ -2,15 +2,15 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MyLedgerApp.Application.Properties;
 
 namespace MyLedgerApp.Application.Services.Auth
 {
     public class AuthConfig
     {
-        internal static void ConfigureAuth(IServiceCollection services, ConfigurationManager configuration)
+        internal static void ConfigureAuth(IServiceCollection services, JwtSettings jwtSettings)
         {
-            var key = Encoding.ASCII.GetBytes(
-                configuration["Jwt:Key"] ?? throw new Exception("JWT key missing"));
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Key);
 
             services.AddAuthentication(options =>
             {

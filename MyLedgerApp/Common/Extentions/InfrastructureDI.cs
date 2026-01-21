@@ -13,7 +13,7 @@ namespace MyLedgerApp.Common.Extentions
         {
             services.AddSingleton<ITransactionRepository, TransactionRepositoryMock>();
             services.AddSingleton<IUserRepository, UserRepositoryMock>();
-            services.AddSingleton<ILedgerRepository, LedgerRepositoryMock>();
+            services.AddSingleton<ILedgerRepository, LedgerRepository>();
             return services;
         }
     }

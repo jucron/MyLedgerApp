@@ -26,55 +26,60 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// Get all Users.
         /// </summary>
         /// <param name="type"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public ActionResult<IEnumerable<UserDTO>> GetUsers([FromQuery] UserType type)
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers([FromQuery] UserType type, CancellationToken ct)
         {
             NotNullEnumValidator.Run(type);
-            return Ok(_userService.GetUsers(type));
+            return Ok(await _userService.GetUsers(type, ct));
         }
 
         /// <summary>
         /// Get a single User.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<UserDTO> GetUser(Guid id)
+        public async Task<ActionResult<UserDTO>> GetUser(Guid id, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
-            return Ok(_userService.GetUserById(id));
+            return Ok(await _userService.GetUserById(id, ct));
         }
 
         /// <summary>
         /// [OPEN] Add a single User. UserType can be either Employee or Client.
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("")]
         [AllowAnonymous]
-        public ActionResult<UserDTO> AddUser(UserRequest request)
+        public async Task<ActionResult<UserDTO>> AddUser(UserRequest request, CancellationToken ct)
         {
             AddUserValidator.Run(request);
-            return Ok(_userService.AddUser(request));
+            return Ok(await _userService.AddUser(request, ct));
         }
 
         /// <summary>
-        /// Update a single User.
+        /// Update a single User. 
+        /// Note that User's Credentials cannot be updated here.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="user"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<UserDTO> UpdateUser(Guid id, UserDTO user)
+        public async Task<ActionResult<UserDTO>> UpdateUser(Guid id, UserDTO user, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
             UpdateUserValidator.Run(user);
-            return Ok(_userService.UpdateUser(id,user));
+            return Ok(await _userService.UpdateUser(id, user, ct));
 
         }
 
@@ -82,13 +87,14 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// Delete a single User.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult DeleteUser(Guid id)
+        public async Task<ActionResult> DeleteUser(Guid id, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
-            _userService.DeleteUser(id);
+            await _userService.DeleteUser(id, ct);
             return Ok();
         }
     }

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using MyLedgerApp.Application.Middlewares;
+using MyLedgerApp.Application.Properties;
 using MyLedgerApp.Common.Extentions;
 
 namespace MyLedgerApp
@@ -22,6 +23,7 @@ namespace MyLedgerApp
             services.AddSwaggerConfig(configuration);
 
             // App Services
+            services.AddApplicationProperties(configuration);
             services.AddApplicationServices();
             services.AddInfrastructureServices();
 

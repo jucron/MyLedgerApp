@@ -18,10 +18,10 @@ namespace MyLedgerApp.Application.Services
 
         public async Task<LedgerDTO> AddLedger(LedgerRequest request, CancellationToken ct)
         {
-            var clientOwner = _userRepository.GetUserById(request.ClientId) ??
+            var clientOwner = await _userRepository.GetUserById(request.ClientId, ct) ??
                 throw new UserNotFoundException(request.ClientId);
 
-            var employee = _userRepository.GetUserById(request.EmployeeId) ??
+            var employee = await _userRepository.GetUserById(request.EmployeeId, ct) ??
                 throw new UserNotFoundException(request.EmployeeId);
 
             if (clientOwner is not Client)
@@ -30,8 +30,7 @@ namespace MyLedgerApp.Application.Services
             if (employee is not Employee)
                 throw new InvalidOperationException($"User {employee.Name} should be an Employee");
 
-            // Add Client to the Ledger 
-            Ledger ledgerToBeAdded = new() { Client = (Client)clientOwner, Employee = (Employee)employee };
+            Ledger ledgerToBeAdded = new() { ClientId = clientOwner.Id, EmployeeId = employee.Id };
 
             await _ledgerRepository.AddLedger(ledgerToBeAdded, ct);
             return LedgerMapper.MapLedgerToLedgerDTO(ledgerToBeAdded);

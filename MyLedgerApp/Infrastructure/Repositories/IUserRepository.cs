@@ -4,10 +4,11 @@ namespace MyLedgerApp.Infrastructure.Repositories
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetAllUsers();
-        User? GetUserById(Guid id);
-        User? GetUserByUsername(string username);
-        bool DeleteUser(User user);
-        void AddUser(User user);
+        Task<IEnumerable<User>> GetAllUsers(CancellationToken ct);
+        Task<User?> GetUserById(Guid id, CancellationToken ct);
+        Task<User?> GetUserByUsername(string username, CancellationToken ct);
+        Task DeleteUser(User user, CancellationToken ct);
+        Task AddUser(User user, CancellationToken ct);
+        Task UpdateUser(User user, CancellationToken ct);
     }
 }

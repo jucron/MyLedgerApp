@@ -27,9 +27,9 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public ActionResult<IEnumerable<LedgerDTO>> GetLedgers([FromQuery] bool includeTransactions, CancellationToken ct)
+        public async Task<ActionResult<IEnumerable<LedgerDTO>>> GetLedgers([FromQuery] bool includeTransactions, CancellationToken ct)
         {
-            return Ok(_ledgerService.GetAllLedgers(includeTransactions, ct));
+            return Ok(await _ledgerService.GetAllLedgers(includeTransactions, ct));
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<LedgerDTO> GetLedger([FromQuery] bool includeTransactions, [FromQuery] Guid id, CancellationToken ct)
+        public async Task<ActionResult<LedgerDTO>> GetLedger([FromQuery] bool includeTransactions, [FromQuery] Guid id, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
-            return Ok(_ledgerService.GetLedgerById(id, includeTransactions, ct));
+            return Ok(await _ledgerService.GetLedgerById(id, includeTransactions, ct));
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        public ActionResult<LedgerDTO> AddLedger(LedgerRequest req, CancellationToken ct)
+        public async Task<ActionResult<LedgerDTO>> AddLedger(LedgerRequest req, CancellationToken ct)
         {
             AddLedgerValidator.Run(req);
-            return Ok(_ledgerService.AddLedger(req, ct));
+            return Ok(await _ledgerService.AddLedger(req, ct));
         }
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult<LedgerDTO> DeleteLedger([FromQuery] Guid id, CancellationToken ct)
+        public async Task<ActionResult<LedgerDTO>> DeleteLedger([FromQuery] Guid id, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
-            _ledgerService.DeleteLedger(id, ct);
+            await _ledgerService.DeleteLedger(id, ct);
             return Ok();
         }
     }

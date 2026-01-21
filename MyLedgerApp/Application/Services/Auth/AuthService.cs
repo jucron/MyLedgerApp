@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MyLedgerApp.Api.v1.Models;
+using MyLedgerApp.Application.Properties;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.Repositories;
 
@@ -11,10 +12,10 @@ namespace MyLedgerApp.Application.Services.Auth
         private readonly IUserRepository _userRepository;
         private readonly JWTHelper _jwtHelper;
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepository)
+        public AuthService(IAppProperties prop, IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _jwtHelper = new JWTHelper(configuration);
+            _jwtHelper = new JWTHelper(prop.JwtSettings);
         }
 
         public LoginResponseDTO Authenticate(LoginRequest request)

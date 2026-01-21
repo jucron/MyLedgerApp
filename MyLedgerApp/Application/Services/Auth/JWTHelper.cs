@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using MyLedgerApp.Application.Properties;
 
 namespace MyLedgerApp.Application.Services.Auth
 {
@@ -10,10 +11,10 @@ namespace MyLedgerApp.Application.Services.Auth
         public string TokenKey { get; private set; }
         public int TokenExpireMinutes { get; private set; }
 
-        public JWTHelper(IConfiguration configuration)
+        public JWTHelper(JwtSettings jwtSettings)
         {
-            TokenKey = configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured.");
-            TokenExpireMinutes = int.TryParse(configuration["Jwt:ExpireMinutes"], out var expireMinutesValue) ? expireMinutesValue : 30;
+            TokenKey = jwtSettings.Key ?? throw new InvalidOperationException("JWT Key not configured.");
+            TokenExpireMinutes = jwtSettings.ExpireMinutes;
         }
 
         public SecurityToken GenerateToken(string username)
