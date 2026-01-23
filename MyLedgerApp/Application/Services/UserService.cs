@@ -1,7 +1,9 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Services.Auth;
-using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Common.Utils;
+using MyLedgerApp.Domain.Entities.Users;
+using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
 using static MyLedgerApp.Common.Utils.Exceptions;
 
@@ -10,58 +12,66 @@ namespace MyLedgerApp.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IDbSession _dbSession;
+        public UserService(IUserRepository userRepository, IDbSession dbSession)
         {
             _userRepository = userRepository;
+            _dbSession = dbSession;
         }
 
-        public async Task<UserDTO> AddUser(UserRequest request, CancellationToken ct)
+        public async Task<UserDTO> AddUser(UserRequest request)
         {
-            //todo: check if user already exists
+            _ = await _userRepository.GetUserByUsername(request.Username) ??
+                throw new UsernameTakenException(request.Username);
+
             User user = UserMapper.MapUserRequestToUser(request);
-            await _userRepository.AddUser(user, ct);
+
+            await _userRepository.AddUser(user);
+            await _dbSession.SaveChangesAsync();
+
             return UserMapper.MapUserToUserDTO(user);
         }
 
-        public async Task DeleteUser(Guid id, CancellationToken ct)
+        public async Task DeleteUser(Guid id)
         {
-            var userToDelete = await _userRepository.GetUserById(id, ct) ??
+            var userToDelete = await _userRepository.GetUserById(id) ??
                 throw new UserNotFoundException(id);
 
-            await _userRepository.DeleteUser(userToDelete, ct);
+            _userRepository.DeleteUser(userToDelete);
+            await _dbSession.SaveChangesAsync();
         }
 
-        public async Task<UserDTO> GetUserById(Guid id, CancellationToken ct)
+        public async Task<UserDTO> GetUserById(Guid id)
         {
-            var userToReturn = await _userRepository.GetUserById(id, ct) ??
+            var userToReturn = await _userRepository.GetUserById(id) ??
                 throw new UserNotFoundException(id);
 
             return UserMapper.MapUserToUserDTO(userToReturn);
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsers(UserType type, CancellationToken ct)
+        public async Task<IEnumerable<UserDTO>> GetUsers(UserType type)
         {
-            var users = await _userRepository.GetAllUsers(ct);
+            var users = await _userRepository.GetAllUsers(type);
 
-            Func<User,bool> isClientOrIsEployee = type is UserType.Client ? (u) => u is Client : (u) => u is Employee;
-
-            return users
-                .Where(isClientOrIsEployee)
-                .Select(UserMapper.MapUserToUserDTO);
+            return users.Select(UserMapper.MapUserToUserDTO);
         }
 
-        public async Task<UserDTO> UpdateUser(Guid id, UserDTO user, CancellationToken ct)
+        public async Task<UserDTO> UpdateUser(Guid id, UserDTO user)
         {
-            var userToUpdate = await _userRepository.GetUserById(id, ct) ??
+            var userToUpdate = await _userRepository.GetUserById(id, isTracking: true) ??
                 throw new UserNotFoundException(id);
 
-            userToUpdate.Name = user.Name;
-            userToUpdate.Email = user.Email;
+            bool isModified = false;
+            static bool IsDifferent(string? a, string? b) => !string.Equals(a, b, StringComparison.Ordinal);
+
+            TryActionUtils.TryActionIf(IsDifferent(userToUpdate.Name, user.Name), ()=> userToUpdate.Name = user.Name, ref isModified);
+            TryActionUtils.TryActionIf(IsDifferent(userToUpdate.Email, user.Email), ()=> userToUpdate.Email = user.Email, ref isModified);
 
             if (userToUpdate is Employee employee)
-                employee.ServiceCenter = user.ServiceCenter ?? employee.ServiceCenter;
-            
-            await _userRepository.UpdateUser(userToUpdate, ct);
+                TryActionUtils.TryActionIf(IsDifferent(employee.ServiceCenter, user.ServiceCenter), () => employee.ServiceCenter = user.ServiceCenter!, ref isModified);
+
+            if (isModified)
+                await _dbSession.SaveChangesAsync();
 
             return UserMapper.MapUserToUserDTO(userToUpdate);
         }

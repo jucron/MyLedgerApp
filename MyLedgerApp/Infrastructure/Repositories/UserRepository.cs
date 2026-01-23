@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Common.Utils;
+using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbConfig;
 
 namespace MyLedgerApp.Infrastructure.Repositories
@@ -9,37 +11,42 @@ namespace MyLedgerApp.Infrastructure.Repositories
     {
         private readonly AppDbContext _db = db;
 
-        public async Task AddUser(User user, CancellationToken ct)
+        public async Task AddUser(User user)
         {
-            await _db.AddAsync(user, ct);
-            await _db.SaveChangesAsync(ct);
+            await _db.AddAsync(user, ReqCanToken.Current);
         }
 
-        public async Task DeleteUser(User user, CancellationToken ct)
+        public void DeleteUser(User user)
         {
             _db.Remove(user);
-            await _db.SaveChangesAsync(ct);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers(CancellationToken ct)
+        public async Task<IEnumerable<User>> GetAllUsers(UserType type)
         {
-            return await _db.Users.AsNoTracking().ToListAsync(ct);
+            IQueryable<User> query = _db.Users.AsNoTracking();
+
+            query = type switch
+            {
+                UserType.Client => query.OfType<Client>(),
+                UserType.Employee => query.OfType<Employee>(),
+                _ => throw new ArgumentException("Type not supported")
+            };
+
+            return await query.ToListAsync(ReqCanToken.Current);
         }
 
-        public Task<User?> GetUserById(Guid id, CancellationToken ct)
+        public Task<User?> GetUserById(Guid id, bool isTracking = false)
         {
-            return _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id, ct);
+            var query = isTracking ? _db.Users : _db.Users.AsNoTracking();
+
+            return query.FirstOrDefaultAsync(u => u.Id == id, ReqCanToken.Current);
         }
 
-        public Task<User?> GetUserByUsername(string username, CancellationToken ct)
+        public Task<User?> GetUserByUsername(string username, bool isTracking = false)
         {
-            return _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Credential.Username == username, ct);
+            var query = isTracking ? _db.Users : _db.Users.AsNoTracking();
+            return query
+                .FirstOrDefaultAsync(u => u.Credential.Username == username, ReqCanToken.Current);
         }
-        public async Task UpdateUser(User user, CancellationToken ct)
-        {
-            _db.Users.Update(user);
-            await _db.SaveChangesAsync(ct);
-        }
-
     }
 }

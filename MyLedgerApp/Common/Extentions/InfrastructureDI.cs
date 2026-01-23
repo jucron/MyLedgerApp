@@ -1,4 +1,5 @@
-﻿using MyLedgerApp.Infrastructure.Repositories;
+﻿using MyLedgerApp.Infrastructure.DbSessions;
+using MyLedgerApp.Infrastructure.Repositories;
 
 namespace MyLedgerApp.Common.Extentions
 {
@@ -11,9 +12,12 @@ namespace MyLedgerApp.Common.Extentions
         /// <returns></returns>
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddSingleton<ITransactionRepository, TransactionRepositoryMock>();
-            services.AddSingleton<IUserRepository, UserRepositoryMock>();
-            services.AddSingleton<ILedgerRepository, LedgerRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepositoryMock>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILedgerRepository, LedgerRepository>();
+
+            services.AddScoped<IDbSession, DbSession>();
+
             return services;
         }
     }

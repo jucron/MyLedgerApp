@@ -1,28 +1,38 @@
 ﻿using System.Text.Json;
 using MyLedgerApp.Application.Handlers;
+using MyLedgerApp.Common.Utils;
 
 namespace MyLedgerApp.Application.Middlewares
 {
-    public class ApplicationMiddleware
+    public class ApplicationMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
-
-        public ApplicationMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+        private readonly RequestDelegate _next = next;
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                // pass control to next middleware / controller
+                SetCancellationToken(context);
                 await _next(context);
             }
             catch (Exception ex)
             {
                 await HandleExceptionAsync(context, ex);
             }
+            finally
+            {
+                ClearCancellationToken();
+            }
+        }
+
+        private static void ClearCancellationToken()
+        {
+            ReqCanToken.Clear();
+        }
+
+        private static void SetCancellationToken(HttpContext context)
+        {
+            ReqCanToken.Set(context.RequestAborted);
         }
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)

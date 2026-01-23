@@ -1,14 +1,13 @@
-﻿using MyLedgerApp.Domain.Entities;
+﻿using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Infrastructure.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllUsers(CancellationToken ct);
-        Task<User?> GetUserById(Guid id, CancellationToken ct);
-        Task<User?> GetUserByUsername(string username, CancellationToken ct);
-        Task DeleteUser(User user, CancellationToken ct);
-        Task AddUser(User user, CancellationToken ct);
-        Task UpdateUser(User user, CancellationToken ct);
+        Task<IEnumerable<User>> GetAllUsers(UserType type);
+        Task<User?> GetUserById(Guid id, bool isTracking = false);
+        Task<User?> GetUserByUsername(string username, bool isTracking = false);
+        void DeleteUser(User user);
+        Task AddUser(User user);
     }
 }

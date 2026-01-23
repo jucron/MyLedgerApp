@@ -26,10 +26,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public ActionResult<IEnumerable<TransactionDTO>> GetTransactions([FromQuery] Guid clientId)
+        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactions([FromQuery] Guid clientId, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(clientId);
-            return Ok(_transactionService.GetTransactions(clientId));
+            return Ok(await _transactionService.GetTransactions(clientId, ct));
         }
 
         /// <summary>
@@ -39,10 +39,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<TransactionDTO> GetTransaction([FromQuery] Guid id)
+        public async Task<ActionResult<TransactionDTO>> GetTransaction([FromQuery] Guid id, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
-            return Ok(_transactionService.GetTransactionById(id));
+            return Ok(await _transactionService.GetTransactionById(id, ct));
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        public ActionResult<TransactionDTO> AddTransaction(TransactionRequest request)
+        public async Task<ActionResult<TransactionDTO>> AddTransaction(TransactionRequest request, CancellationToken ct)
         {
             AddTransactionValidator.Run(request);
-            var transaction = _transactionService.AddTransaction(request);
+            var transaction = await _transactionService.AddTransaction(request, ct);
             return CreatedAtAction(nameof(GetTransaction), transaction);
         }
 
@@ -66,10 +66,10 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult<TransactionDTO> DeleteTransaction(Guid id)
+        public async Task<ActionResult<TransactionDTO>> DeleteTransaction(Guid id, CancellationToken ct)
         {
             NotEmptyGuidValidator.Run(id);
-            _transactionService.DeleteTransaction(id);
+            await _transactionService.DeleteTransaction(id, ct);
             return Ok();
         }
     }

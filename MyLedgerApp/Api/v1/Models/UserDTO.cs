@@ -1,4 +1,4 @@
-﻿using MyLedgerApp.Domain.Entities;
+﻿using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Api.v1.Models
 {

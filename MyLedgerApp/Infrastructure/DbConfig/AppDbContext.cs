@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Infrastructure.DbConfig
 {

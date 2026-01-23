@@ -10,9 +10,9 @@ namespace MyLedgerApp.Infrastructure.Repositories
                 .ThenInclude(l => l.Client)
             .FirstOrDefaultAsync(t => t.Id == id);
         */
-        IEnumerable<Transaction> GetTransactionsByClientId(Guid clientId);
-        Transaction? GetTransactionById(Guid id);
-        bool DeleteTransaction(Transaction transaction);
-        void AddTransaction(Transaction transaction);
+        Task<IEnumerable<Transaction>> GetTransactionsByClientId(Guid clientId, CancellationToken ct);
+        Task<Transaction?> GetTransactionById(Guid id, CancellationToken ct);
+        Task DeleteTransaction(Transaction transaction, CancellationToken ct);
+        Task AddTransaction(Transaction transaction, CancellationToken ct);
     }
 }

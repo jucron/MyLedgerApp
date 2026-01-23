@@ -1,4 +1,6 @@
-﻿namespace MyLedgerApp.Domain.Entities
+﻿using MyLedgerApp.Domain.Entities.Users;
+
+namespace MyLedgerApp.Domain.Entities
 {
     public class Ledger
     {

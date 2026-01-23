@@ -1,4 +1,4 @@
-﻿namespace MyLedgerApp.Domain.Entities
+﻿namespace MyLedgerApp.Domain.Entities.Users
 {
     public enum UserType
     {

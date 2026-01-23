@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Properties;
-using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.Repositories;
 
 namespace MyLedgerApp.Application.Services.Auth

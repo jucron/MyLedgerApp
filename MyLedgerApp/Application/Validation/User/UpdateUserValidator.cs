@@ -1,7 +1,7 @@
 ﻿
 using FluentValidation;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Application.Validation.User
 {

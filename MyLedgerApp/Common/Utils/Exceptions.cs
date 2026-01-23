@@ -17,6 +17,10 @@
             ResourceNotFoundException($"Could not found any Ledger with ID {id}")
         {
         }
+        public class UsernameTakenException(string username) :
+            ArgumentException($"Username {username} is already taken")
+        {
+        }
 
 
     }
