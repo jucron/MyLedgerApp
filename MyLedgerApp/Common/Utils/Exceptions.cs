@@ -5,7 +5,7 @@
         public class ResourceNotFoundException(string message) : Exception(message)
         {
         }
-        public class TransactionNotFoundException(Guid id) : 
+        public class TransactionNotFoundException(Guid id) :
             ResourceNotFoundException($"Could not found any Transaction with ID {id}")
         {
         }
@@ -13,7 +13,7 @@
             ResourceNotFoundException($"Could not found any User with ID {id}")
         {
         }
-        public class LedgerNotFoundException(Guid id) : 
+        public class LedgerNotFoundException(Guid id) :
             ResourceNotFoundException($"Could not found any Ledger with ID {id}")
         {
         }
@@ -21,7 +21,6 @@
             ArgumentException($"Username {username} is already taken")
         {
         }
-
 
     }
 }

@@ -11,7 +11,7 @@ namespace MyLedgerApp.Application.Validation.User
             RuleFor(t => t.LedgerId).NotEmpty();
             RuleFor(t => t.Amount).NotEmpty();
             RuleFor(t => t.Description).NotEmpty();
-            RuleFor(t => t.Type).NotEmpty();
+            RuleFor(t => t.Type).IsDefinedEnum();
         }
 
     }

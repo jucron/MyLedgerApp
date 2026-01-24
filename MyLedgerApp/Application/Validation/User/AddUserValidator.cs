@@ -13,6 +13,7 @@ namespace MyLedgerApp.Application.Validation.User
             RuleFor(l => l.Password).NotEmpty();
             RuleFor(l => l.Email).NotEmpty().EmailAddress();
             RuleFor(l => l.Name).NotEmpty();
+            RuleFor(l => l.UserType).IsDefinedEnum();
             RuleFor(l => l.ServiceCenter).NotEmpty()
                 .When(l => l.UserType == UserType.Employee)
                 .WithMessage("SC necessary for employees.");

@@ -2,7 +2,7 @@
 {
     public class LoginResponseDTO
     {
-        public string Username { get; internal set; }
-        public string Token { get; internal set; }
+        public string Username { get; internal set; } = null!;
+        public string Token { get; internal set; } = null!;
     }
 }

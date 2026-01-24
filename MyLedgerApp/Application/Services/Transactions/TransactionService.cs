@@ -1,6 +1,7 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Domain.Entities;
+using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
 using static MyLedgerApp.Common.Utils.Exceptions;
 
@@ -10,15 +11,17 @@ namespace MyLedgerApp.Application.Services.Transactions
     {
         private readonly ITransactionRepository _transactionRepository;
         private readonly ILedgerRepository _ledgerRepository;
-        public TransactionService(ITransactionRepository transactionRepository, ILedgerRepository ledgerRepository)
+        private readonly IDbSession _dbSession;
+        public TransactionService(ITransactionRepository transactionRepository, ILedgerRepository ledgerRepository, IDbSession session)
         {
             _transactionRepository = transactionRepository;
             _ledgerRepository = ledgerRepository;
+            _dbSession = session;
         }
 
-        public async Task<TransactionDTO> AddTransaction(TransactionRequest request, CancellationToken ct)
+        public async Task<TransactionDTO> AddTransaction(TransactionRequest request)
         {
-            var ledger = await _ledgerRepository.GetLedgerById(request.LedgerId, false, ct) ??
+            var ledger = await _ledgerRepository.GetLedgerById(request.LedgerId, includeTransactions: true, isTracking: true) ??
                 throw new LedgerNotFoundException(request.LedgerId);
 
             Transaction newTransaction = new()
@@ -29,41 +32,43 @@ namespace MyLedgerApp.Application.Services.Transactions
                 LedgerId = ledger.Id
             };
 
-            TransactionOperator.ProcessTransaction(ledger, newTransaction);
-            await _transactionRepository.AddTransaction(newTransaction, ct);
-            await _ledgerRepository.UpdateLedger(ledger, ct);
+            LedgerBalanceManager.AddTransaction(ledger, newTransaction);
+
+            await _transactionRepository.AddTransaction(newTransaction);
             ledger.Transactions.Add(newTransaction);
+            await _dbSession.SaveChangesAsync();
             
             return TransactionMapper.MapTransactionToTransactionDTO(newTransaction);
             
         }
 
-        public async Task DeleteTransaction(Guid id, CancellationToken ct)
+        public async Task DeleteTransaction(Guid id)
         {
-            var transactionToDelete = _transactionRepository.GetTransactionById(id, ct) 
+            var transactionToDelete = await _transactionRepository.GetTransactionById(id, isTracking: true) 
                 ?? throw new TransactionNotFoundException(id);
 
-            var ledger = _ledgerRepository.GetLedgerById(transactionToDelete.Ledger.Id) ??
-                throw new LedgerNotFoundException(transactionToDelete.Ledger.Id);
+            var ledger = await _ledgerRepository.GetLedgerById(transactionToDelete.LedgerId, includeTransactions: true, isTracking: true) ??
+                throw new LedgerNotFoundException(transactionToDelete.LedgerId);
 
-            TransactionOperator.ProcessTransactionRemoval(ledger, transactionToDelete);
+            LedgerBalanceManager.RemoveTransaction(ledger, transactionToDelete);
 
             ledger.Transactions.Remove(transactionToDelete);
             _transactionRepository.DeleteTransaction(transactionToDelete);
+            await _dbSession.SaveChangesAsync();
         }
 
-        public async Task<TransactionDTO> GetTransactionById(Guid id, CancellationToken ct)
+        public async Task<TransactionDTO> GetTransactionById(Guid id)
         {
-            var transaction = _transactionRepository.GetTransactionById(id) ?? 
+            var transaction = await _transactionRepository.GetTransactionById(id) ?? 
                 throw new TransactionNotFoundException(id);
 
             return TransactionMapper.MapTransactionToTransactionDTO(transaction) ;
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactions(Guid clientId, CancellationToken ct)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactions(Guid clientId)
         {
-            return _transactionRepository.GetTransactionsByClientId(clientId)
-                .Select(t => TransactionMapper.MapTransactionToTransactionDTO(t));
+            var transactions = await _transactionRepository.GetTransactionsByClientId(clientId);
+            return transactions.Select(TransactionMapper.MapTransactionToTransactionDTO);
         }
     }
 }

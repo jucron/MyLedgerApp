@@ -11,14 +11,12 @@ namespace MyLedgerApp.Infrastructure.Repositories
 
         public async Task AddLedger(Ledger ledger) 
         {
-            await _db.AddAsync(ledger, ReqCanToken.Current);
-            await _db.SaveChangesAsync(ReqCanToken.Current);
+            await _db.AddAsync(ledger, CTokenHolder.Current);
         }
 
-        public async Task DeleteLedger(Ledger ledger)
+        public void DeleteLedger(Ledger ledger)
         {
             _db.Remove(ledger);
-            await _db.SaveChangesAsync(ReqCanToken.Current);
         }
 
         public async Task<IEnumerable<Ledger>> GetAllLedgers(bool includeTransactions)
@@ -31,20 +29,21 @@ namespace MyLedgerApp.Infrastructure.Repositories
             if (includeTransactions)
                 query = query.Include(l => l.Transactions);
 
-            return await query.ToListAsync(ReqCanToken.Current);
+            return await query.ToListAsync(CTokenHolder.Current);
         }
 
-        public async Task<Ledger?> GetLedgerById(Guid id, bool includeTransactions)
+        public async Task<Ledger?> GetLedgerById(Guid id, bool includeTransactions, bool isTracking = false)
         {
-            IQueryable<Ledger> query = _db.Ledgers
-               .AsNoTracking()
-               .Include(l => l.Client)
-               .Include(l => l.Employee);
+            IQueryable<Ledger> query = isTracking ? _db.Ledgers : _db.Ledgers.AsNoTracking();
+
+            query = query
+                .Include(l => l.Client)
+                .Include(l => l.Employee);
 
             if (includeTransactions)
                 query = query.Include(l => l.Transactions);
 
-            return await query.FirstOrDefaultAsync(l => l.Id == id, ReqCanToken.Current);
+            return await query.FirstOrDefaultAsync(l => l.Id == id, CTokenHolder.Current);
         }
     }
 }

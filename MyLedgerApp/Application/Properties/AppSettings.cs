@@ -2,6 +2,6 @@
 {
     public class AppSettings
     {
-        public string ApiVersion { get; set; }
+        public string ApiVersion { get; set; } = null!;
     }
 }

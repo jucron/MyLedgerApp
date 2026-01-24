@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.DbConfig;
 
@@ -8,37 +9,37 @@ namespace MyLedgerApp.Infrastructure.Repositories
     public class TransactionRepository(AppDbContext db) : ITransactionRepository
     {
         private readonly AppDbContext _db = db;
-        public async Task AddTransaction(Transaction transaction, CancellationToken ct)
+        public async Task AddTransaction(Transaction transaction)
         {
-            await _db.AddAsync(transaction, ct);
-            await _db.SaveChangesAsync(ct);
+            await _db.AddAsync(transaction, CTokenHolder.Current);
         }
 
-        public async Task DeleteTransaction(Transaction transaction, CancellationToken ct)
+        public void DeleteTransaction(Transaction transaction)
         {
             _db.Remove(transaction);
-            await _db.SaveChangesAsync(ct);
         }
 
-        public async Task<Transaction?> GetTransactionById(Guid id, CancellationToken ct)
+        public async Task<Transaction?> GetTransactionById(Guid id, bool isTracking = false)
         {
-            IQueryable<Transaction> query = _db.Transactions
-                .AsNoTracking()
+            IQueryable<Transaction> query = isTracking ? _db.Transactions : _db.Transactions.AsNoTracking();
+
+            query = query
                 .Include(t => t.Ledger)
                 .ThenInclude(t => t.Client);
             
-            return await query.FirstOrDefaultAsync(t => t.Id == id, ct);
+            return await query.FirstOrDefaultAsync(t => t.Id == id, CTokenHolder.Current);
         }
 
-        public async Task<IEnumerable<Transaction>> GetTransactionsByClientId(Guid clientId, CancellationToken ct)
+        public async Task<IEnumerable<Transaction>> GetTransactionsByClientId(Guid clientId, bool isTracking = false)
         {
-            IQueryable<Transaction> query = _db.Transactions
-                .AsNoTracking()
-                .Where(t => t.Ledger.Client.Id == clientId)
+            IQueryable<Transaction> query = isTracking ? _db.Transactions : _db.Transactions.AsNoTracking();
+
+            query = query
+                .Where(t => TryUtils.AllNotNull(t.Ledger, t.Ledger.Client) && t.Ledger.Client.Id == clientId)
                 .Include(t => t.Ledger)
                 .ThenInclude(t => t.Client);
 
-            return await query.ToListAsync(ct);
+            return await query.ToListAsync(CTokenHolder.Current);
         }
     }
 }

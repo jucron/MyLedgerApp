@@ -4,6 +4,7 @@ using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Properties;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.Repositories;
+using static MyLedgerApp.Common.Utils.Exceptions;
 
 namespace MyLedgerApp.Application.Services.Auth
 {
@@ -18,11 +19,15 @@ namespace MyLedgerApp.Application.Services.Auth
             _jwtHelper = new JWTHelper(prop.JwtSettings);
         }
 
-        public LoginResponseDTO Authenticate(LoginRequest request)
+        public async Task<LoginResponseDTO> Authenticate(LoginRequest request)
         {
-            // Validate credentials 
-            var userFromRepo = _userRepository.GetUserByUsername(request.Username);
-            ValidateUserCredentials(request.Password, userFromRepo);
+            var errorMsg = "Invalid username or password";
+
+            var userFromRepo = await _userRepository.GetUserByUsername(request.Username) ??
+                throw new UnauthorizedAccessException(errorMsg);
+
+            if (userFromRepo.Credential.VerifyPassword(request.Password))
+                throw new UnauthorizedAccessException(errorMsg);
 
             var token = _jwtHelper.GenerateToken(request.Username);
 
@@ -33,21 +38,14 @@ namespace MyLedgerApp.Application.Services.Auth
             };
         }
 
-        private static void ValidateUserCredentials(string password, User? user)
-        {
-            if (user == null || !user.Credential.VerifyPassword(password))
-                throw new UnauthorizedAccessException("Invalid username or password.");
-
-        }
-
         public LoginResponseDTO RefreshToken(string token)
         {
             var remaining = _jwtHelper.GetTimeRemaining(token);
 
             if (remaining > TimeSpan.FromMinutes(5))
-               throw new ArgumentException("Token is still valid. Please refresh when token expires in 5 minutes or less.");
+               throw new ArgumentException("Token is still valid. Please refresh when token expires in 5 minutes or less");
 
-            var username = _jwtHelper.GetClaim(token, ClaimTypes.Name) ?? throw new UnauthorizedAccessException("Invalid token.");
+            var username = _jwtHelper.GetClaim(token, ClaimTypes.Name) ?? throw new UnauthorizedAccessException("Invalid token");
 
             var refreshedToken = _jwtHelper.GenerateToken(username);
 

@@ -4,7 +4,7 @@ namespace MyLedgerApp.Application.Services.Auth
 {
     public interface IAuthService
     {
-        LoginResponseDTO Authenticate(LoginRequest request);
+        Task<LoginResponseDTO> Authenticate(LoginRequest request);
         LoginResponseDTO RefreshToken(string token);
     }
 }

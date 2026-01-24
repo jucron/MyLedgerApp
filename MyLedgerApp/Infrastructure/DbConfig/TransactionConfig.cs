@@ -14,7 +14,10 @@ namespace MyLedgerApp.Infrastructure.DbConfig
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.Amount)
+                .IsRequired()
+                .HasPrecision(18, 4);
+
             builder.Property(x => x.Type).IsRequired();
 
             builder.HasOne(x => x.Ledger)

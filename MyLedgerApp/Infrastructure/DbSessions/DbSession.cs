@@ -9,7 +9,7 @@ namespace MyLedgerApp.Infrastructure.DbSessions
         private readonly AppDbContext _db = dbContext;
         public async Task SaveChangesAsync()
         {
-            await _db.SaveChangesAsync(ReqCanToken.Current);
+            await _db.SaveChangesAsync(CTokenHolder.Current);
         }
     }
 }

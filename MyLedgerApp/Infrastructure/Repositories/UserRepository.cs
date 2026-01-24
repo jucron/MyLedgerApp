@@ -13,7 +13,7 @@ namespace MyLedgerApp.Infrastructure.Repositories
 
         public async Task AddUser(User user)
         {
-            await _db.AddAsync(user, ReqCanToken.Current);
+            await _db.AddAsync(user, CTokenHolder.Current);
         }
 
         public void DeleteUser(User user)
@@ -28,25 +28,24 @@ namespace MyLedgerApp.Infrastructure.Repositories
             query = type switch
             {
                 UserType.Client => query.OfType<Client>(),
-                UserType.Employee => query.OfType<Employee>(),
-                _ => throw new ArgumentException("Type not supported")
+                _ => query.OfType<Employee>()
             };
 
-            return await query.ToListAsync(ReqCanToken.Current);
+            return await query.ToListAsync(CTokenHolder.Current);
         }
 
         public Task<User?> GetUserById(Guid id, bool isTracking = false)
         {
             var query = isTracking ? _db.Users : _db.Users.AsNoTracking();
 
-            return query.FirstOrDefaultAsync(u => u.Id == id, ReqCanToken.Current);
+            return query.FirstOrDefaultAsync(u => u.Id == id, CTokenHolder.Current);
         }
 
         public Task<User?> GetUserByUsername(string username, bool isTracking = false)
         {
             var query = isTracking ? _db.Users : _db.Users.AsNoTracking();
             return query
-                .FirstOrDefaultAsync(u => u.Credential.Username == username, ReqCanToken.Current);
+                .FirstOrDefaultAsync(u => u.Credential.Username == username, CTokenHolder.Current);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MyLedgerApp.Application.Validation
 {
-    public class NotEmptyGuidValidator : ValidatorBase<Guid, NotEmptyGuidValidator>
+    public class GuidValidator : ValidatorBase<Guid, GuidValidator>
     {
         protected override void SetValidations()
         {

@@ -4,9 +4,9 @@ namespace MyLedgerApp.Application.Services.Transactions
 {
     public interface ITransactionService
     {
-        Task<TransactionDTO> AddTransaction(TransactionRequest transactionDTO, CancellationToken ct);
-        Task DeleteTransaction(Guid id, CancellationToken ct);
-        Task<TransactionDTO> GetTransactionById(Guid id, CancellationToken ct);
-        Task<IEnumerable<TransactionDTO>> GetTransactions(Guid clientId, CancellationToken ct);
+        Task<TransactionDTO> AddTransaction(TransactionRequest transactionDTO);
+        Task DeleteTransaction(Guid id);
+        Task<TransactionDTO> GetTransactionById(Guid id);
+        Task<IEnumerable<TransactionDTO>> GetTransactions(Guid clientId);
     }
 }

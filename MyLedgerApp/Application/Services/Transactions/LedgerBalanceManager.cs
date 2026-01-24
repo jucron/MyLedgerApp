@@ -2,14 +2,14 @@
 
 namespace MyLedgerApp.Application.Services.Transactions
 {
-    public class TransactionOperator
+    public class LedgerBalanceManager
     {
-        public static void ProcessTransaction(Ledger ledger, Transaction transaction)
+        public static void AddTransaction(Ledger ledger, Transaction transaction)
         {
             if (transaction.Type == TransactionType.Withdrawal )
             {
                 if (ledger.CurrentBalance < 0 || ledger.CurrentBalance < transaction.Amount)
-                throw new InvalidOperationException("Insufficient funds.");
+                throw new InvalidOperationException("Insufficient funds");
                 ledger.CurrentBalance -= transaction.Amount;
             }
             else if(transaction.Type == TransactionType.Deposit )
@@ -19,7 +19,7 @@ namespace MyLedgerApp.Application.Services.Transactions
             
         }
 
-        internal static void ProcessTransactionRemoval(Ledger ledger, Transaction transaction)
+        internal static void RemoveTransaction(Ledger ledger, Transaction transaction)
         {
             // Reversing the processing:
 

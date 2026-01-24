@@ -26,13 +26,12 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// Get all Users.
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers([FromQuery] UserType type)
         {
-            NotNullEnumValidator.Run(type);
+            EnumValidator<UserType>.Run(type);
             return Ok(await _userService.GetUsers(type));
         }
 
@@ -40,13 +39,12 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// Get a single User.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<UserDTO>> GetUser(Guid id)
         {
-            NotEmptyGuidValidator.Run(id);
+            GuidValidator.Run(id);
             return Ok(await _userService.GetUserById(id));
         }
 
@@ -54,7 +52,6 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// [OPEN] Add a single User. UserType can be either Employee or Client.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("")]
@@ -62,7 +59,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         public async Task<ActionResult<UserDTO>> AddUser(UserRequest request)
         {
             AddUserValidator.Run(request);
-            return Ok(await _userService.AddUser(request));
+            return CreatedAtAction(nameof(GetUser),await _userService.AddUser(request));
         }
 
         /// <summary>
@@ -71,13 +68,12 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="user"></param>
-        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<UserDTO>> UpdateUser(Guid id, UserDTO user)
         {
-            NotEmptyGuidValidator.Run(id);
+            GuidValidator.Run(id);
             UpdateUserValidator.Run(user);
             return Ok(await _userService.UpdateUser(id, user));
 
@@ -87,15 +83,14 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// Delete a single User.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="ct"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
-            NotEmptyGuidValidator.Run(id);
+            GuidValidator.Run(id);
             await _userService.DeleteUser(id);
-            return Ok();
+            return NoContent();
         }
     }
 }

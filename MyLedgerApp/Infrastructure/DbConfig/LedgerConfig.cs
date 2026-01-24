@@ -14,7 +14,9 @@ namespace MyLedgerApp.Infrastructure.DbConfig
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.Property(x => x.CurrentBalance).IsRequired();
+            builder.Property(x => x.CurrentBalance)
+                .IsRequired()
+                .HasPrecision(18,4);
 
             builder.HasMany<Transaction>(x => x.Transactions)
                 .WithOne(x => x.Ledger)

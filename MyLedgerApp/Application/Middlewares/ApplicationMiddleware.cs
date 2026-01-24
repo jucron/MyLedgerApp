@@ -27,12 +27,12 @@ namespace MyLedgerApp.Application.Middlewares
 
         private static void ClearCancellationToken()
         {
-            ReqCanToken.Clear();
+            CTokenHolder.Clear();
         }
 
         private static void SetCancellationToken(HttpContext context)
         {
-            ReqCanToken.Set(context.RequestAborted);
+            CTokenHolder.Set(context.RequestAborted);
         }
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)

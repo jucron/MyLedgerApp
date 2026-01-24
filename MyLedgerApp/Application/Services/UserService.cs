@@ -64,11 +64,11 @@ namespace MyLedgerApp.Application.Services
             bool isModified = false;
             static bool IsDifferent(string? a, string? b) => !string.Equals(a, b, StringComparison.Ordinal);
 
-            TryActionUtils.TryActionIf(IsDifferent(userToUpdate.Name, user.Name), ()=> userToUpdate.Name = user.Name, ref isModified);
-            TryActionUtils.TryActionIf(IsDifferent(userToUpdate.Email, user.Email), ()=> userToUpdate.Email = user.Email, ref isModified);
+            TryUtils.ActionIf(IsDifferent(userToUpdate.Name, user.Name), ()=> userToUpdate.Name = user.Name, ref isModified);
+            TryUtils.ActionIf(IsDifferent(userToUpdate.Email, user.Email), ()=> userToUpdate.Email = user.Email, ref isModified);
 
             if (userToUpdate is Employee employee)
-                TryActionUtils.TryActionIf(IsDifferent(employee.ServiceCenter, user.ServiceCenter), () => employee.ServiceCenter = user.ServiceCenter!, ref isModified);
+                TryUtils.ActionIf(IsDifferent(employee.ServiceCenter, user.ServiceCenter), () => employee.ServiceCenter = user.ServiceCenter!, ref isModified);
 
             if (isModified)
                 await _dbSession.SaveChangesAsync();

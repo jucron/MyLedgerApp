@@ -13,6 +13,9 @@ namespace MyLedgerApp.Common.Extentions
 
             try
             {
+                if (db.Database.IsInMemory())
+                    return;
+                
                 await db.Database.MigrateAsync();
                 logger.LogInformation("Database migrated successfully");
             }

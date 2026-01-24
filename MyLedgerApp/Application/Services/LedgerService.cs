@@ -2,6 +2,7 @@
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Domain.Entities.Users;
+using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
 using static MyLedgerApp.Common.Utils.Exceptions;
 
@@ -11,10 +12,12 @@ namespace MyLedgerApp.Application.Services
     {
         private readonly ILedgerRepository _ledgerRepository;
         private readonly IUserRepository _userRepository;
-        public LedgerService(ILedgerRepository ledgerRepository, IUserRepository userRepository)
+        private readonly IDbSession _dbSession;
+        public LedgerService(ILedgerRepository ledgerRepository, IUserRepository userRepository, IDbSession dbSession)
         {
             _ledgerRepository = ledgerRepository;
             _userRepository = userRepository;
+            _dbSession = dbSession;
         }
 
         public async Task<LedgerDTO> AddLedger(LedgerRequest request)
@@ -34,6 +37,8 @@ namespace MyLedgerApp.Application.Services
             Ledger ledgerToBeAdded = new() { ClientId = clientOwner.Id, EmployeeId = employee.Id };
 
             await _ledgerRepository.AddLedger(ledgerToBeAdded);
+            await _dbSession.SaveChangesAsync();
+
             return LedgerMapper.MapLedgerToLedgerDTO(ledgerToBeAdded);
         }
 
@@ -42,7 +47,8 @@ namespace MyLedgerApp.Application.Services
             var ledgerToDelete = await _ledgerRepository.GetLedgerById(id, includeTransactions: false) ??
                 throw new LedgerNotFoundException(id);
 
-            await _ledgerRepository.DeleteLedger(ledgerToDelete);
+            _ledgerRepository.DeleteLedger(ledgerToDelete);
+            await _dbSession.SaveChangesAsync();
         }
 
         public async Task<LedgerDTO> GetLedgerById(Guid id, bool includeTransactions)
@@ -58,8 +64,6 @@ namespace MyLedgerApp.Application.Services
             var list = await _ledgerRepository.GetAllLedgers(includeTransactions);
             return list.Select(l => LedgerMapper.MapLedgerToLedgerDTO(l));
         }
-
-
      
     }
 }

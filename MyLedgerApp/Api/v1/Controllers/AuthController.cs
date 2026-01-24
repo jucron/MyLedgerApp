@@ -24,11 +24,11 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns>A token with expire time.</returns>
         [AllowAnonymous]
         [HttpPost("login")]
-        public ActionResult<LoginResponseDTO> Login([FromBody] LoginRequest request)
+        public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequest request)
         {
             LoginValidator.Run(request);
 
-            var response = _authService.Authenticate(request);
+            var response = await _authService.Authenticate(request);
 
             return Ok(response);
         }

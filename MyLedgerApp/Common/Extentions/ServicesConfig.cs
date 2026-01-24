@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using MyLedgerApp.Application.Documentation;
 using MyLedgerApp.Application.Services.Auth;
 using MyLedgerApp.Infrastructure.DbConfig;
@@ -41,9 +42,32 @@ namespace MyLedgerApp.Common.Extentions
         /// <returns></returns>
         public static IServiceCollection AddDatabaseConfig(this IServiceCollection services, ConfigurationManager configuration)
         {
+            var defConn = configuration.GetDbSettings().DefaultConnection;
+            bool sqlServerAvailable = false;
+
+            try
+            {
+                using var conn = new SqlConnection(defConn);
+                conn.Open();
+                sqlServerAvailable = true;
+            }
+            catch
+            {
+                Console.WriteLine("DB failed to connect. Using In-Memory DB instead.");
+            }
+
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetDbSettings().DefaultConnection));
+            {
+                if (sqlServerAvailable)
+                {
+                    options.UseSqlServer(defConn);
+                }
+                else
+                {
+                    options.UseInMemoryDatabase("FallbackDb");
+                }
+            });
+
 
             return services;
         }

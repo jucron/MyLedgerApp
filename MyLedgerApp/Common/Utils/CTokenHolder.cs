@@ -1,9 +1,9 @@
 ﻿namespace MyLedgerApp.Common.Utils
 {
     /// <summary>
-    /// The Request CancellationToken holder.
+    /// The CancellationToken Holder, usually from the request.
     /// </summary>
-    public static class ReqCanToken
+    public static class CTokenHolder
     {
         
         private static readonly AsyncLocal<CancellationTokenHolder> _current = new();
