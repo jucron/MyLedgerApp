@@ -5,6 +5,10 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLedgerApp", "MyLedgerApp\MyLedgerApp.csproj", "{0764CF04-6971-4168-8CA4-FC110E91E803}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailWorker", "EmailWorker\EmailWorker.csproj", "{527310A4-5E87-4A0F-8558-742BBC092EFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{231C981D-D72A-4D10-B2CD-C5B787E366E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{0764CF04-6971-4168-8CA4-FC110E91E803}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0764CF04-6971-4168-8CA4-FC110E91E803}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0764CF04-6971-4168-8CA4-FC110E91E803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,7 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Services.Auth;
+using MyLedgerApp.Application.Services.Events;
 using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbSessions;
@@ -13,10 +14,12 @@ namespace MyLedgerApp.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IDbSession _dbSession;
-        public UserService(IUserRepository userRepository, IDbSession dbSession)
+        private readonly IEventPublisher _evtPublisher;
+        public UserService(IUserRepository userRepository, IDbSession dbSession, IEventPublisher evtPub)
         {
             _userRepository = userRepository;
             _dbSession = dbSession;
+            _evtPublisher = evtPub;
         }
 
         public async Task<UserDTO> AddUser(UserRequest request)
@@ -28,6 +31,8 @@ namespace MyLedgerApp.Application.Services
 
             await _userRepository.AddUser(user);
             await _dbSession.SaveChangesAsync();
+
+            await _evtPublisher.PublishAsync(user.ToUserRegisteredEvent());
 
             return UserMapper.MapUserToUserDTO(user);
         }

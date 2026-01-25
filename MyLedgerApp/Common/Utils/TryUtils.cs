@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyLedgerApp.Common.Utils
+﻿namespace MyLedgerApp.Common.Utils
 {
     public class TryUtils
     {
