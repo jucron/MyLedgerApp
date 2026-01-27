@@ -1,12 +1,12 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Application.Services.Auth;
 using MyLedgerApp.Application.Services.Events;
-using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
-using static MyLedgerApp.Common.Utils.Exceptions;
+using MyLedgerApp.Utils;
+using Shared.Contracts.Events;
+using static MyLedgerApp.Utils.Exceptions;
 
 namespace MyLedgerApp.Application.Services
 {

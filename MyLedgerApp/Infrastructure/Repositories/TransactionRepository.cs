@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.DbConfig;
+using MyLedgerApp.Utils;
 
 namespace MyLedgerApp.Infrastructure.Repositories
 {

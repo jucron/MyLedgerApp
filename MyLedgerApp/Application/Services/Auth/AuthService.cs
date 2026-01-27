@@ -4,7 +4,7 @@ using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Application.Properties;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.Repositories;
-using static MyLedgerApp.Common.Utils.Exceptions;
+using static MyLedgerApp.Utils.Exceptions;
 
 namespace MyLedgerApp.Application.Services.Auth
 {

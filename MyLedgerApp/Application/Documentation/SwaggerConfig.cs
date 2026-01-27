@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -6,7 +7,7 @@ namespace MyLedgerApp.Application.Documentation
 {
     public class SwaggerConfig
     {
-        internal static void ConfigSwaggerOptions(string apiVersion, SwaggerGenOptions c)
+        public static void ConfigSwaggerOptions(string apiVersion, SwaggerGenOptions c)
         {
             c.SwaggerDoc(apiVersion, new OpenApiInfo
             {

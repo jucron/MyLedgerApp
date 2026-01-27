@@ -1,7 +1,7 @@
 ﻿using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
 
-namespace MyLedgerApp.Common.Extentions
+namespace Host.Extensions
 {
     public static class InfrastructureDI
     {

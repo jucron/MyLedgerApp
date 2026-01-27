@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-using MyLedgerApp.Application.Properties;
+﻿using MyLedgerApp.Application.Properties;
 using MyLedgerApp.Application.Services;
 using MyLedgerApp.Application.Services.Auth;
 using MyLedgerApp.Application.Services.Transactions;
+using Shared;
 
-namespace MyLedgerApp.Common.Extentions
+namespace Host.Extensions
 {
     public static class ApplicationDI
     {
@@ -31,10 +31,10 @@ namespace MyLedgerApp.Common.Extentions
         public static IServiceCollection AddApplicationProperties(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.Configure<JwtSettings>(
-                configuration.GetSection(AppProperties.JwtSection));
+                configuration.GetSection(Properties.JwtSection));
 
             services.Configure<CacheSettings>(
-                configuration.GetSection(AppProperties.CacheSection));
+                configuration.GetSection(Properties.CacheSection));
 
             services.AddSingleton<IAppProperties,AppProperties>();
             return services;

@@ -4,7 +4,7 @@ using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
-using static MyLedgerApp.Common.Utils.Exceptions;
+using static MyLedgerApp.Utils.Exceptions;
 
 namespace MyLedgerApp.Application.Services
 {

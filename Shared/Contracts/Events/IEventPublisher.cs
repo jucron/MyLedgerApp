@@ -1,6 +1,4 @@
-﻿using Shared.Contracts.Events;
-
-namespace MyLedgerApp.Application.Services.Events
+﻿namespace Shared.Contracts.Events
 {
     public interface IEventPublisher
     {

@@ -1,4 +1,4 @@
-﻿namespace MyLedgerApp.Common.Utils
+﻿namespace MyLedgerApp.Utils
 {
     /// <summary>
     /// The CancellationToken Holder, usually from the request.

@@ -2,7 +2,7 @@
 using Azure.Messaging.ServiceBus;
 using Shared.Contracts.Events;
 
-namespace MyLedgerApp.Application.Services.Events
+namespace Messaging.AzureServiceBus.Producer
 {
     public class EventPublisher : IEventPublisher
     {

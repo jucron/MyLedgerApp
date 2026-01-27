@@ -3,7 +3,7 @@ using Azure.Communication.Email;
 using Microsoft.Azure.WebJobs;
 using Shared.Contracts.Events;
 
-namespace EmailWorker.Functions
+namespace Messaging.Email
 {
     public class UserRegisteredEmailFunction
     {

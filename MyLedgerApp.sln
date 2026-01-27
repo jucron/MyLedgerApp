@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLedgerApp", "MyLedgerApp\MyLedgerApp.csproj", "{0764CF04-6971-4168-8CA4-FC110E91E803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Messaging\Messaging.csproj", "{0176AD17-6B74-B9D0-37C5-A12AB8276BD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailWorker", "EmailWorker\EmailWorker.csproj", "{527310A4-5E87-4A0F-8558-742BBC092EFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{22F72E50-B86A-48A6-4252-6FDC98C636E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{231C981D-D72A-4D10-B2CD-C5B787E366E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{6ABE2E2A-727F-1212-4FEB-80BCCCBBE752}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLedgerApp", "MyLedgerApp\MyLedgerApp.csproj", "{80303D38-25EC-42D7-9D77-494A452C4B8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0764CF04-6971-4168-8CA4-FC110E91E803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0764CF04-6971-4168-8CA4-FC110E91E803}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0764CF04-6971-4168-8CA4-FC110E91E803}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0764CF04-6971-4168-8CA4-FC110E91E803}.Release|Any CPU.Build.0 = Release|Any CPU
-		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{527310A4-5E87-4A0F-8558-742BBC092EFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{231C981D-D72A-4D10-B2CD-C5B787E366E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0176AD17-6B74-B9D0-37C5-A12AB8276BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0176AD17-6B74-B9D0-37C5-A12AB8276BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0176AD17-6B74-B9D0-37C5-A12AB8276BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0176AD17-6B74-B9D0-37C5-A12AB8276BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F72E50-B86A-48A6-4252-6FDC98C636E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F72E50-B86A-48A6-4252-6FDC98C636E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F72E50-B86A-48A6-4252-6FDC98C636E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F72E50-B86A-48A6-4252-6FDC98C636E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ABE2E2A-727F-1212-4FEB-80BCCCBBE752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ABE2E2A-727F-1212-4FEB-80BCCCBBE752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ABE2E2A-727F-1212-4FEB-80BCCCBBE752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ABE2E2A-727F-1212-4FEB-80BCCCBBE752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

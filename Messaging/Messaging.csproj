@@ -19,6 +19,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="AzureServiceBus\Consumer\" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Shared\Shared.csproj" />
 	</ItemGroup>
 

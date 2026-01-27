@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
+using Host.Extensions;
+using Messaging.Extensions;
 using MyLedgerApp.Application.Middlewares;
-using MyLedgerApp.Application.Properties;
-using MyLedgerApp.Common.Extentions;
 
-namespace MyLedgerApp
+namespace Host
 {
     public class Program
     {
@@ -26,6 +26,7 @@ namespace MyLedgerApp
             services.AddApplicationProperties(configuration);
             services.AddApplicationServices();
             services.AddInfrastructureServices();
+            services.AddMessaging(configuration);
 
             services.AddAuthConfig(configuration);
 

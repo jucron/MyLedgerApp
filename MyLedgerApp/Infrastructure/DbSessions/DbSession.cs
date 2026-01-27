@@ -1,6 +1,5 @@
-﻿
-using MyLedgerApp.Common.Utils;
-using MyLedgerApp.Infrastructure.DbConfig;
+﻿using MyLedgerApp.Infrastructure.DbConfig;
+using MyLedgerApp.Utils;
 
 namespace MyLedgerApp.Infrastructure.DbSessions
 {

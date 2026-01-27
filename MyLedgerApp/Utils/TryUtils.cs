@@ -1,4 +1,4 @@
-﻿namespace MyLedgerApp.Common.Utils
+﻿namespace MyLedgerApp.Utils
 {
     public class TryUtils
     {

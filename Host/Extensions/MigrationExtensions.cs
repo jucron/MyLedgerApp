@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyLedgerApp.Infrastructure.DbConfig;
 
-namespace MyLedgerApp.Common.Extentions
+namespace Host.Extensions
 {
     public static class MigrationExtensions
     {

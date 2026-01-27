@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyLedgerApp.Common.Utils;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbConfig;
+using MyLedgerApp.Utils;
 
 namespace MyLedgerApp.Infrastructure.Repositories
 {

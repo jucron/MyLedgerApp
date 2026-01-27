@@ -1,11 +1,12 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Host.Extensions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MyLedgerApp.Application.Documentation;
 using MyLedgerApp.Application.Services.Auth;
 using MyLedgerApp.Infrastructure.DbConfig;
 
 
-namespace MyLedgerApp.Common.Extentions
+namespace Host.Extensions
 {
     public static class ServicesConfig
     {

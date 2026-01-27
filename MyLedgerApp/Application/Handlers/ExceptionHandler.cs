@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using FluentValidation;
-using static MyLedgerApp.Common.Utils.Exceptions;
+using static MyLedgerApp.Utils.Exceptions;
 
 namespace MyLedgerApp.Application.Handlers
 {
