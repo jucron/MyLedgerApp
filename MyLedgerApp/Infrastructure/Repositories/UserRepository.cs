@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbConfig;
 using MyLedgerApp.Utils;

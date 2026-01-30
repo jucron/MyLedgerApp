@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MyLedgerApp.Api.v1.Models;
+﻿using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Api.v1.Mappers

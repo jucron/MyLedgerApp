@@ -1,5 +1,4 @@
-﻿using Host.Extensions;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MyLedgerApp.Application.Documentation;
 using MyLedgerApp.Application.Services.Auth;

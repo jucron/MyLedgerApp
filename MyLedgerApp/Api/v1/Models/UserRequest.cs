@@ -1,5 +1,4 @@
 ﻿using MyLedgerApp.Domain.Entities.Users;
-using MyLedgerApp.Application.Validation;
 
 namespace MyLedgerApp.Api.v1.Models
 {

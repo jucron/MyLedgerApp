@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace MyLedgerApp.Application.Validation
+﻿namespace MyLedgerApp.Application.Validation
 {
     public class EnumValidator<TEnum> : ValidatorBase<TEnum, EnumValidator<TEnum>> 
         where TEnum : struct, Enum

@@ -33,14 +33,5 @@ namespace Host.Extensions
                 ?? throw new InvalidOperationException(
                     "App settings missing");
         }
-
-        public static AppSettings GetServiceBusSettings(this IConfiguration config)
-        {
-            return config
-                .GetSection(Properties.ServiceBus)
-                .Get<AppSettings>()
-                ?? throw new InvalidOperationException(
-                    "ServiceBus settings missing");
-        }
     }
 }

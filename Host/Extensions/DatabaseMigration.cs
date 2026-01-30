@@ -3,7 +3,7 @@ using MyLedgerApp.Infrastructure.DbConfig;
 
 namespace Host.Extensions
 {
-    public static class MigrationExtensions
+    public static class DatabaseMigration
     {
         public static async Task TryMigrateAsync(this WebApplication app)
         {

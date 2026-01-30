@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using Host.Extensions;
-using Messaging.Extensions;
 using MyLedgerApp.Application.Middlewares;
 
 namespace Host

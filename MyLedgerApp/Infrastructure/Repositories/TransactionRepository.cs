@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.DbConfig;
 using MyLedgerApp.Utils;

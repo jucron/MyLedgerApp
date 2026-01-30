@@ -1,28 +1,22 @@
-﻿using System.Text.Json;
-using Azure.Communication.Email;
-using Microsoft.Azure.WebJobs;
+﻿using Azure.Communication.Email;
+using Messaging.AzureServiceBus.Consumer;
 using Shared.Contracts.Events;
 
 namespace Messaging.Email
 {
-    public class UserRegisteredEmailFunction
+    public class UserRegisteredEmailHandler : IIntegrationEventHandler<UserRegisteredEvent>
     {
         private readonly EmailClient _emailClient;
 
-        public UserRegisteredEmailFunction(EmailClient emailClient)
+        public UserRegisteredEmailHandler(EmailClient emailClient)
         {
             _emailClient = emailClient;
         }
 
-        [FunctionName("UserRegisteredEmail")]
-        public async Task Run(
-            [ServiceBusTrigger("user-events", Connection = "ServiceBus")]
-        string message)
+        public async Task HandleAsync(UserRegisteredEvent @event)
         {
-            var evt = JsonSerializer.Deserialize<UserRegisteredEvent>(message);
-
-            if (evt?.Email != null)
-                await SendWelcomeEmail(evt.Email);
+            if (@event?.Email is not null)
+                await SendWelcomeEmail(@event.Email);
         }
 
         private async Task SendWelcomeEmail(string email)
