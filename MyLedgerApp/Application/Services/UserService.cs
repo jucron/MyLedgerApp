@@ -22,7 +22,7 @@ namespace MyLedgerApp.Application.Services
             _evtPublisher = evtPub;
         }
 
-        public async Task<UserDTO> AddUser(UserRequest request)
+        public async Task<UserDTO> AddUser(UserAddRequest request)
         {
             if (await _userRepository.GetUserByUsername(request.Username) is not null)
                 throw new UsernameTakenException(request.Username);
@@ -32,7 +32,7 @@ namespace MyLedgerApp.Application.Services
             await _userRepository.AddUser(user);
             await _dbSession.SaveChangesAsync();
 
-            await _evtPublisher.PublishAsync(user.ToUserRegisteredEvent());
+            _ = _evtPublisher.PublishAsync(user.ToUserRegisteredEvent()); // Async processing
 
             return UserMapper.MapUserToUserDTO(user);
         }
@@ -61,7 +61,7 @@ namespace MyLedgerApp.Application.Services
             return users.Select(UserMapper.MapUserToUserDTO);
         }
 
-        public async Task<UserDTO> UpdateUser(Guid id, UserDTO user)
+        public async Task<UserDTO> UpdateUser(Guid id, UserUpdateRequest user)
         {
             var userToUpdate = await _userRepository.GetUserById(id, isTracking: true) ??
                 throw new UserNotFoundException(id);

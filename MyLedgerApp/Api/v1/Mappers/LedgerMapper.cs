@@ -12,8 +12,8 @@ namespace MyLedgerApp.Api.v1.Mappers
                 Id = ledger.Id,
                 CurrentBalance = ledger.CurrentBalance,
                 Transactions = ledger.Transactions?.Select(TransactionMapper.MapTransactionToTransactionDTO).ToList(),
-                ClientId = ledger.Client.Id,
-                EmployeeId = ledger.Employee.Id
+                ClientId = ledger.ClientId,
+                EmployeeId = ledger.EmployeeId
             };
         }
     }

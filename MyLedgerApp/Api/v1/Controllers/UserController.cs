@@ -54,7 +54,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         [HttpPost]
         [Route("")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserDTO>> AddUser(UserRequest request)
+        public async Task<ActionResult<UserDTO>> AddUser(UserAddRequest request)
         {
             AddUserValidator.Run(request);
             var user = await _userService.AddUser(request);
@@ -70,12 +70,11 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<UserDTO>> UpdateUser(Guid id, UserDTO user)
+        public async Task<ActionResult<UserDTO>> UpdateUser(Guid id, UserUpdateRequest user)
         {
             GuidValidator.Run(id);
             UpdateUserValidator.Run(user);
             return Ok(await _userService.UpdateUser(id, user));
-
         }
 
         /// <summary>

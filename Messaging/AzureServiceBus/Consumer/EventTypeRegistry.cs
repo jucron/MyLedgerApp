@@ -1,4 +1,5 @@
-﻿using Shared.Contracts.Events.Publishable;
+﻿using Shared.Contracts.Events;
+using Shared.Contracts.Events.Publishable;
 
 namespace Messaging.AzureServiceBus.Consumer
 {
@@ -6,16 +7,16 @@ namespace Messaging.AzureServiceBus.Consumer
     {
         private static readonly Dictionary<string, Type> _types = [];
 
-        public static void Register<T>(string subject) where T : IPublishableEvent
+        public static void Register<T>(EvtSubject subject) where T : IPublishableEvent
         {
-            _types[subject] = typeof(T);
+            _types[subject.Desc] = typeof(T);
         }
-        public static Type Resolve(string eventName)
+        public static Type Resolve(string subject)
         {
-            if (!_types.TryGetValue(eventName, out var type))
+            if (!_types.TryGetValue(subject, out var type))
             {
                 throw new InvalidOperationException(
-                    $"Unknown integration event: {eventName}");
+                    $"Unknown integration event: {subject}");
             }
 
             return type;

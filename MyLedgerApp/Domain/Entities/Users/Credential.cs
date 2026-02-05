@@ -2,22 +2,31 @@
 {
     public class Credential
     {
-        public string Username { get; set; } = null!;
-        private string PasswordHash { get; set; } = null!;
+        public string Username { get; private set; } = null!;
+        public string PasswordHash { get; private set; } = null!;
 
-        public string StorePassword
+        private Credential() { } // EF Core
+
+        public Credential(string username, string plainPassword)
         {
-            // Only allow setting
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Password cannot be empty.", nameof(value));
-
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(value);
-            }
+            Username = username;
+            SetPassword(plainPassword);
         }
 
-        public bool VerifyPassword(string password) =>
-            !string.IsNullOrEmpty(password) && BCrypt.Net.BCrypt.Verify(password, PasswordHash);
+        public void SetPassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Password cannot be empty.", nameof(password));
+
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public bool VerifyPassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(PasswordHash))
+                throw new InvalidOperationException("Password hash is not initialized.");
+
+            return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
+        }
     }
 }

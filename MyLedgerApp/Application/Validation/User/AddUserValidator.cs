@@ -5,7 +5,7 @@ using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Application.Validation.User
 {
-    public class AddUserValidator : ValidatorBase<UserRequest, AddUserValidator>
+    public class AddUserValidator : ValidatorBase<UserAddRequest, AddUserValidator>
     {
         protected override void SetValidations()
         {

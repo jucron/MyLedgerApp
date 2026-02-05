@@ -33,8 +33,8 @@ namespace Host.Extensions
             services.AddSingleton<IServiceBusEventDispatcher, ServiceBusEventDispatcher>();
 
             // Register event types
-            EventTypeRegistry.Register<UserRegisteredEvent>(nameof(EvtSubject.UserRegistered));
-            EventTypeRegistry.Register<PasswordRecoverRequestedEvent>(nameof(EvtSubject.PassRecovery));
+            EventTypeRegistry.Register<UserRegisteredEvent>(EvtSubject.UserRegistered);
+            EventTypeRegistry.Register<PasswordRecoverRequestedEvent>(EvtSubject.PassRecovery);
 
             // Register event handlers
             services.AddScoped<IIntegrationEventHandler<UserRegisteredEvent>, UserRegisteredEmailHandler>();

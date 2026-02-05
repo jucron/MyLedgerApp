@@ -34,9 +34,12 @@ namespace MyLedgerApp.Infrastructure.Repositories
             IQueryable<Transaction> query = isTracking ? _db.Transactions : _db.Transactions.AsNoTracking();
 
             query = query
-                .Where(t => TryUtils.AllNotNull(t.Ledger, t.Ledger.Client) && t.Ledger.Client.Id == clientId)
+                .Where(t =>
+                    t.Ledger != null &&
+                    t.Ledger.Client != null &&
+                    t.Ledger.ClientId == clientId)
                 .Include(t => t.Ledger)
-                .ThenInclude(t => t.Client);
+                .ThenInclude(l => l.Client);
 
             return await query.ToListAsync(CTokenHolder.Current);
         }

@@ -24,7 +24,7 @@ namespace MyLedgerApp.Application.Services.Auth
             var userFromRepo = await _userRepository.GetUserByUsername(request.Username) ??
                 throw new UnauthorizedAccessException(errorMsg);
 
-            if (userFromRepo.Credential.VerifyPassword(request.Password))
+            if (!userFromRepo.Credential.VerifyPassword(request.Password))
                 throw new UnauthorizedAccessException(errorMsg);
 
             var token = _jwtHelper.GenerateToken(request.Username);

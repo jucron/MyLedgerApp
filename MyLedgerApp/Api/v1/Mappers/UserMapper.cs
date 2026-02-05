@@ -38,38 +38,30 @@ namespace MyLedgerApp.Api.v1.Mappers
             };
         }
 
-        public static User MapUserRequestToUser(UserRequest userRequest)
+        public static User MapUserRequestToUser(UserAddRequest userRequest)
         {
             return (userRequest.UserType == UserType.Client) ?
                 MapUserRequestToClient(userRequest) : MapUserRequestToEmployee(userRequest);
         }
 
-        private static User MapUserRequestToEmployee(UserRequest userRequest)
+        private static Employee MapUserRequestToEmployee(UserAddRequest userRequest)
         {
             return new Employee()
             {
                 Email = userRequest.Email,
                 Name = userRequest.Name,
                 ServiceCenter = userRequest.ServiceCenter ?? "not defined.",
-                Credential = new Credential()
-                {
-                    Username = userRequest.Username,
-                    StorePassword = userRequest.Password
-                }
+                Credential = new Credential(userRequest.Username, userRequest.Password)
             };
         }
 
-        private static User MapUserRequestToClient(UserRequest userRequest)
+        private static Client MapUserRequestToClient(UserAddRequest userRequest)
         {
             return new Client()
             {
                 Email = userRequest.Email,
                 Name = userRequest.Name,
-                Credential = new Credential()
-                {
-                    Username = userRequest.Username,
-                    StorePassword = userRequest.Password
-                }
+                Credential = new Credential(userRequest.Username, userRequest.Password)
             };
         }
     }

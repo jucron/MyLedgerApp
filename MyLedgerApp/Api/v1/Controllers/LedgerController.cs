@@ -55,7 +55,8 @@ namespace MyLedgerApp.Api.v1.Controllers
         public async Task<ActionResult<LedgerDTO>> AddLedger(LedgerRequest req)
         {
             AddLedgerValidator.Run(req);
-            return CreatedAtAction(nameof(GetLedger),await _ledgerService.AddLedger(req));
+            var ledger = await _ledgerService.AddLedger(req);
+            return CreatedAtAction(nameof(GetLedger),new { includeTransactions = false, ledger.Id}, ledger);
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<LedgerDTO>> DeleteLedger([FromQuery] Guid id)
+        public async Task<ActionResult> DeleteLedger([FromQuery] Guid id)
         {
             GuidValidator.Run(id);
             await _ledgerService.DeleteLedger(id);

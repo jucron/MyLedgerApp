@@ -5,10 +5,10 @@ namespace MyLedgerApp.Application.Services
 {
     public interface IUserService
     {
-        Task<UserDTO> AddUser(UserRequest request);
+        Task<UserDTO> AddUser(UserAddRequest request);
         Task DeleteUser(Guid id);
         Task<UserDTO> GetUserById(Guid id);
         Task<IEnumerable<UserDTO>> GetUsers(UserType type);
-        Task<UserDTO> UpdateUser(Guid id, UserDTO user);
+        Task<UserDTO> UpdateUser(Guid id, UserUpdateRequest user);
     }
 }

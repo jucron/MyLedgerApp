@@ -56,7 +56,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         {
             AddTransactionValidator.Run(request);
             var transaction = await _transactionService.AddTransaction(request);
-            return CreatedAtAction(nameof(GetTransaction), transaction);
+            return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id },  transaction);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<TransactionDTO>> DeleteTransaction(Guid id)
+        public async Task<ActionResult> DeleteTransaction(Guid id)
         {
             GuidValidator.Run(id);
             await _transactionService.DeleteTransaction(id);
