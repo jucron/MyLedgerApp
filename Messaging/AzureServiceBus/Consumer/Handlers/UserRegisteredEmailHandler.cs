@@ -1,8 +1,7 @@
 ﻿using Azure.Communication.Email;
-using Messaging.AzureServiceBus.Consumer;
-using Shared.Contracts.Events;
+using Shared.Contracts.Events.Publishable;
 
-namespace Messaging.Email
+namespace Messaging.AzureServiceBus.Consumer.Handlers
 {
     public class UserRegisteredEmailHandler : IIntegrationEventHandler<UserRegisteredEvent>
     {

@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Messaging.AzureServiceBus.Consumer
 {
@@ -11,10 +12,10 @@ namespace Messaging.AzureServiceBus.Consumer
         public ServiceBusEventConsumerHostedService(
             ServiceBusClient client,
             IServiceBusEventDispatcher dispatcher,
-            ServiceBusSettings options)
+            IOptions<ServiceBusSettings> options)
         {
             _dispatcher = dispatcher;
-            _processor = client.CreateProcessor(options.TopicName, options.SubscriptionName);
+            _processor = client.CreateProcessor(options.Value?.TopicName, options.Value?.SubscriptionName);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

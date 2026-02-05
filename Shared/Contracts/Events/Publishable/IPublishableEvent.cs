@@ -1,4 +1,4 @@
-﻿namespace Shared.Contracts.Events
+﻿namespace Shared.Contracts.Events.Publishable
 {
     public interface IPublishableEvent
     {

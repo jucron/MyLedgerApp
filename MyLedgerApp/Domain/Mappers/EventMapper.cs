@@ -1,9 +1,9 @@
 ﻿using MyLedgerApp.Domain.Entities.Users;
-using Shared.Contracts.Events;
+using Shared.Contracts.Events.Publishable;
 
-namespace MyLedgerApp.Application.Services.Events
+namespace MyLedgerApp.Domain.Mappers
 {
-    public static class EvtMapperExtentions
+    public static class EventMapper
     {
         public static UserRegisteredEvent ToUserRegisteredEvent(this User user)
         {

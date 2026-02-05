@@ -11,7 +11,7 @@ namespace Host.Extensions
         public static JwtSettings GetJwtSettings(this IConfiguration config)
         {
             return config
-                .GetSection(Properties.JwtSection)
+                .GetSection(PropertySection.Jwt)
                 .Get<JwtSettings>()
                 ?? throw new InvalidOperationException(
                     "Jwt settings missing");
@@ -19,7 +19,7 @@ namespace Host.Extensions
         public static DbSettings GetDbSettings(this IConfiguration config)
         {
             return config
-                .GetSection(Properties.DbSection)
+                .GetSection(PropertySection.Db)
                 .Get<DbSettings>()
                 ?? throw new InvalidOperationException(
                     "DB settings missing");
@@ -28,7 +28,7 @@ namespace Host.Extensions
         public static AppSettings GetAppSettings(this IConfiguration config)
         {
             return config
-                .GetSection(Properties.AppSection)
+                .GetSection(PropertySection.App)
                 .Get<AppSettings>()
                 ?? throw new InvalidOperationException(
                     "App settings missing");

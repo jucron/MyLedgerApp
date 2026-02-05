@@ -3,6 +3,7 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Contracts.Events;
+using Shared.Contracts.Events.Publishable;
 
 namespace Messaging.AzureServiceBus.Producer
 {

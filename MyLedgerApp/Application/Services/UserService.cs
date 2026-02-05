@@ -1,7 +1,7 @@
 ﻿using MyLedgerApp.Api.v1.Mappers;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Application.Services.Events;
 using MyLedgerApp.Domain.Entities.Users;
+using MyLedgerApp.Domain.Mappers;
 using MyLedgerApp.Infrastructure.DbSessions;
 using MyLedgerApp.Infrastructure.Repositories;
 using MyLedgerApp.Utils;
@@ -24,7 +24,7 @@ namespace MyLedgerApp.Application.Services
 
         public async Task<UserDTO> AddUser(UserRequest request)
         {
-            _ = await _userRepository.GetUserByUsername(request.Username) ??
+            if (await _userRepository.GetUserByUsername(request.Username) is not null)
                 throw new UsernameTakenException(request.Username);
 
             User user = UserMapper.MapUserRequestToUser(request);

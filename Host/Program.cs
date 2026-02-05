@@ -12,6 +12,7 @@ namespace Host
 
             var services = builder.Services;
             var configuration = builder.Configuration;
+            var env = builder.Environment;
 
             // Controllers
             services.AddControllers()
@@ -25,7 +26,7 @@ namespace Host
             services.AddApplicationProperties(configuration);
             services.AddApplicationServices();
             services.AddInfrastructureServices();
-            services.AddMessaging(configuration);
+            services.AddMessagingServices(configuration, env);
 
             services.AddAuthConfig(configuration);
 

@@ -31,10 +31,10 @@ namespace Host.Extensions
         public static IServiceCollection AddApplicationProperties(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.Configure<JwtSettings>(
-                configuration.GetSection(Properties.JwtSection));
+                configuration.GetSection(PropertySection.Jwt));
 
             services.Configure<CacheSettings>(
-                configuration.GetSection(Properties.CacheSection));
+                configuration.GetSection(PropertySection.Cache));
 
             services.AddSingleton<IAppProperties,AppProperties>();
             return services;

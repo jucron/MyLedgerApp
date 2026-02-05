@@ -57,7 +57,8 @@ namespace MyLedgerApp.Api.v1.Controllers
         public async Task<ActionResult<UserDTO>> AddUser(UserRequest request)
         {
             AddUserValidator.Run(request);
-            return CreatedAtAction(nameof(GetUser),await _userService.AddUser(request));
+            var user = await _userService.AddUser(request);
+            return CreatedAtAction(nameof(GetUser), new {id = user.Id }, user);
         }
 
         /// <summary>
