@@ -25,9 +25,9 @@ namespace Messaging.AzureServiceBus.FakeClients
             StringBuilder sb = new();
             sb.AppendLine("[Dev] simulated Email sent:");
             sb.AppendLine("From: " + string.Join(",", email.SenderAddress));
-            sb.AppendLine("To: " + string.Join(",", email.Recipients));
-            sb.AppendLine("Subject: " + email.Headers);
-            sb.AppendLine("Body: " + email.Content);
+            sb.AppendLine("To: " + string.Join(",", email.Recipients.To.Select(t=>t.Address)));
+            sb.AppendLine("Subject: " + email.Content.Subject);
+            sb.AppendLine("Body: " + email.Content.PlainText);
             return sb.ToString();
         }
     }

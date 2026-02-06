@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using Azure.Messaging.ServiceBus;
+﻿using Azure.Messaging.ServiceBus;
+using Messaging.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Contracts.Events;
@@ -24,7 +24,7 @@ namespace Messaging.AzureServiceBus.Producer
         {
             try
             {
-                var json = JsonSerializer.Serialize(@event);
+                var json = @event.SerializeEvent();
                 var message = new ServiceBusMessage(json)
                 {
                     ContentType = "application/json",

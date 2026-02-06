@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using Azure.Messaging.ServiceBus;
+﻿using Azure.Messaging.ServiceBus;
+using Messaging.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +21,8 @@ namespace Messaging.AzureServiceBus.Consumer
 
             try
             {
-                var evt = JsonSerializer.Deserialize(message.Body, eventType);
+                var evt = message.Body.DeserializeEvent(eventType);
+
                 if (evt is null)
                     return;
 

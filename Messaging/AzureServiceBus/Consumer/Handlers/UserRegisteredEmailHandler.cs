@@ -15,18 +15,18 @@ namespace Messaging.AzureServiceBus.Consumer.Handlers
         public async Task HandleAsync(UserRegisteredEvent @event)
         {
             if (@event?.Email is not null)
-                await SendWelcomeEmail(@event.Email);
+                await SendWelcomeEmail(@event);
         }
 
-        private async Task SendWelcomeEmail(string email)
+        private async Task SendWelcomeEmail(UserRegisteredEvent evt)
         {
             var emailMessage = new EmailMessage(
                 senderAddress: "noreply@myledgerapp.com",
                 recipients: new EmailRecipients(
-                    new[] { new EmailAddress(email) }),
+                    new[] { new EmailAddress(evt.Email) }),
                 content: new EmailContent("Welcome to MyLedgerApp!")
                 {
-                    PlainText = "Thanks for registering 🎉"
+                    PlainText = $"Thanks for registering, {evt.Name}."
                 });
 
             await _emailClient.SendAsync(Azure.WaitUntil.Started,emailMessage);

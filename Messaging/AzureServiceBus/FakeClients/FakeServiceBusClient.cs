@@ -30,7 +30,7 @@ namespace Messaging.AzureServiceBus.FakeClients
 
         public override async Task SendMessageAsync(ServiceBusMessage message, CancellationToken cancellationToken = default)
         {
-            _log.LogInformation($"[Dev] Simulated send to {_queueName}: {message.Body}");
+            _log.LogInformation($"[Dev] Simulated event queued to {_queueName}: {message.Body}");
 
             await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken); //simulate small interval
 
