@@ -1,12 +1,10 @@
 ﻿
 namespace Shared.Contracts.Events.Publishable
 {
-    public class PasswordRecoverRequestedEvent() : PublishableEventBase(EvtSubject.PassRecovery)
+    public class PasswordChangedEvent() : PublishableEventBase(EvtSubject.PassChanged)
     {
         public string Username { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public string RecoveryToken { get; set; } = null!;
-        public TimeSpan RecoveryTimeout { get; set; }
         public DateTime OccurredAt { get; set; } = DateTime.UtcNow;
     }
 }

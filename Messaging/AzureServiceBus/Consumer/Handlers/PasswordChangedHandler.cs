@@ -3,30 +3,32 @@ using Shared.Contracts.Events.Publishable;
 
 namespace Messaging.AzureServiceBus.Consumer.Handlers
 {
-    public class PasswordRecoverRequestedHandler : IIntegrationEventHandler<PasswordRecoverRequestedEvent>
+    public class PasswordChangedHandler : IIntegrationEventHandler<PasswordChangedEvent>
     {
         private readonly EmailClient _emailClient;
 
-        public PasswordRecoverRequestedHandler(EmailClient emailClient)
+        public PasswordChangedHandler(EmailClient emailClient)
         {
             _emailClient = emailClient;
         }
 
-        public async Task HandleAsync(PasswordRecoverRequestedEvent @event)
+        public async Task HandleAsync(PasswordChangedEvent @event)
         {
             if (@event?.Email is not null)
-                await SendPassRecoveryEmail(@event);
+                await SendPassChangedEmail(@event);
         }
 
-        private async Task SendPassRecoveryEmail(PasswordRecoverRequestedEvent evt)
+        private async Task SendPassChangedEmail(PasswordChangedEvent evt)
         {
             var emailMessage = new EmailMessage(
                 senderAddress: "noreply@myledgerapp.com",
                 recipients: new EmailRecipients(
                     new[] { new EmailAddress(evt.Email) }),
-                content: new EmailContent("This is your details to reset your password!")
+                content: new EmailContent("Your password have been changed!")
                 {
-                    PlainText = $"\n - username: {evt.Username}\n - recoveryToken: {evt.RecoveryToken} \n - Token expires in {evt.RecoveryTimeout.Minutes} minutes!",
+                    PlainText = $"Dear {evt.Username}," +
+                    $"\nyour password have been changed at {evt.OccurredAt}. " +
+                    $"\nIf you don't recognize this change, please send us an email right away!",
                 });
 
             await _emailClient.SendAsync(Azure.WaitUntil.Started,emailMessage);

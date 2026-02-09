@@ -48,5 +48,31 @@ namespace MyLedgerApp.Api.v1.Controllers
 
             return Ok(response);
         }
+
+        /// <summary>
+        /// [OPEN] Request a Password Reset, by it's Username. A token will be sent via E-Mail.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Ok status regardless of success or failure.</returns>
+        [AllowAnonymous]
+        [HttpPost("resetpass")]
+        public ActionResult RequestPasswordReset([FromBody] RequestPasswordReset request)
+        {
+            _authService.RequestPasswordReset(request.Username);
+            return Ok();
+        }
+
+        /// <summary>
+        /// [OPEN] Change the Password, by the password reset token.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Ok status regardless of success or failure.</returns>
+        [AllowAnonymous]
+        [HttpPost("changepass")]
+        public ActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            _authService.ChangePassword(request);
+            return Ok();
+        }
     }
 }

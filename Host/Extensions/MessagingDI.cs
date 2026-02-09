@@ -35,10 +35,12 @@ namespace Host.Extensions
             // Register event types
             EventTypeRegistry.Register<UserRegisteredEvent>(EvtSubject.UserRegistered);
             EventTypeRegistry.Register<PasswordRecoverRequestedEvent>(EvtSubject.PassRecovery);
+            EventTypeRegistry.Register<PasswordChangedEvent>(EvtSubject.PassChanged);
 
             // Register event handlers
             services.AddScoped<IIntegrationEventHandler<UserRegisteredEvent>, UserRegisteredEmailHandler>();
             services.AddScoped<IIntegrationEventHandler<PasswordRecoverRequestedEvent>, PasswordRecoverRequestedHandler>();
+            services.AddScoped<IIntegrationEventHandler<PasswordChangedEvent>, PasswordChangedHandler>();
 
             // Register consumer hosted service
             services.AddHostedService<ServiceBusEventConsumerHostedService>();

@@ -19,6 +19,10 @@ namespace Host.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILedgerService, LedgerService>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddMemoryCache();
+            services.AddSingleton<ICacheService, CacheService>();
+
             return services;
         }
 
