@@ -16,7 +16,7 @@ namespace MyLedgerApp.Application.Documentation
                     .OfType<AllowAnonymousAttribute>().Any();
 
             if (hasAllowAnonymous)
-                operation.Security = [];
+                operation.Security?.Clear();
         }
     }
 

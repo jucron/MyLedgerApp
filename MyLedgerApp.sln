@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLedgerApp", "MyLedgerApp\MyLedgerApp.csproj", "{80303D38-25EC-42D7-9D77-494A452C4B8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5EF848ED-D342-4EE7-BF58-ECEF4D6B3474}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80303D38-25EC-42D7-9D77-494A452C4B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EF848ED-D342-4EE7-BF58-ECEF4D6B3474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EF848ED-D342-4EE7-BF58-ECEF4D6B3474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EF848ED-D342-4EE7-BF58-ECEF4D6B3474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EF848ED-D342-4EE7-BF58-ECEF4D6B3474}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

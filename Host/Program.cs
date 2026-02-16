@@ -36,7 +36,7 @@ namespace Host
 
             if (app.Environment.IsDevelopment())
             {
-                await app.TryMigrateAsync();
+                await app.BootDatabaseAsync();
 
                 app.UseSwagger();
                 app.UseSwaggerUI();

@@ -53,7 +53,7 @@ namespace Host.Extensions
             }
             catch
             {
-                Console.WriteLine("DB failed to connect. Using In-Memory DB instead.");
+                Console.WriteLine("DB failed to connect. Using Sqlite DB instead.");
             }
 
             services.AddDbContext<AppDbContext>(options =>
@@ -64,8 +64,9 @@ namespace Host.Extensions
                 }
                 else
                 {
-                    options.UseInMemoryDatabase("FallbackDb");
-                }
+                    var dbPath = Path.Combine(AppContext.BaseDirectory, "dev.db");
+                    options.UseSqlite($"Data Source={dbPath}");
+        }
             });
 
 

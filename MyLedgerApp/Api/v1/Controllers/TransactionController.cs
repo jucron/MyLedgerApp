@@ -25,8 +25,8 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <param name="clientId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("")]
-        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactions([FromQuery] Guid clientId)
+        [Route("client/{clientId}")]
+        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactions(Guid clientId)
         {
             GuidValidator.Run(clientId);
             return Ok(await _transactionService.GetTransactions(clientId));
@@ -39,7 +39,7 @@ namespace MyLedgerApp.Api.v1.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<TransactionDTO>> GetTransaction([FromQuery] Guid id)
+        public async Task<ActionResult<TransactionDTO>> GetTransaction(Guid id)
         {
             GuidValidator.Run(id);
             return Ok(await _transactionService.GetTransactionById(id));

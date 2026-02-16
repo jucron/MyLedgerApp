@@ -22,10 +22,10 @@ namespace Host.Extensions
                config.GetSection(PropertySection.ServiceBus));
 
             // Azure Service Bus client
-            RegisterAzureServiceBusClient(services, env.IsDevelopment());
+            RegisterAzureServiceBusClient(services, !env.IsProduction());
 
             // Azure Service Email client
-            RegisterAzureServiceEmailClient(services, env.IsDevelopment());
+            RegisterAzureServiceEmailClient(services, !env.IsProduction());
            
 
             // Register services
@@ -48,9 +48,9 @@ namespace Host.Extensions
             return services;
         }
 
-        private static void RegisterAzureServiceEmailClient(IServiceCollection services, bool isDevelopment)
+        private static void RegisterAzureServiceEmailClient(IServiceCollection services, bool shouldFake)
         {
-            if (isDevelopment)
+            if (shouldFake)
             {
                 services.AddSingleton<EmailClient, FakeServiceEmailClient>();
             }
@@ -67,9 +67,9 @@ namespace Host.Extensions
             }
         }
 
-        private static void RegisterAzureServiceBusClient(IServiceCollection services, bool isDevelopment)
+        private static void RegisterAzureServiceBusClient(IServiceCollection services, bool shouldFake)
         {
-            if (isDevelopment)
+            if (shouldFake)
             {
                 services.AddSingleton<ServiceBusClient, FakeServiceBusClient>();
             }
