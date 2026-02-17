@@ -4,5 +4,6 @@
     {
         CacheSettings CacheSettings { get; } 
         JwtSettings JwtSettings { get; }
+        DbSettings DbSettings { get; }
     }
 }

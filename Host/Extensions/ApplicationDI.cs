@@ -40,6 +40,9 @@ namespace Host.Extensions
             services.Configure<CacheSettings>(
                 configuration.GetSection(PropertySection.Cache));
 
+            services.Configure<DbSettings>(
+                configuration.GetSection(PropertySection.Db));
+
             services.AddSingleton<IAppProperties,AppProperties>();
             return services;
         }
