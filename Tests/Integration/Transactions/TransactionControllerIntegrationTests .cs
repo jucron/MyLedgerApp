@@ -4,26 +4,20 @@ using Microsoft.Extensions.DependencyInjection;
 using MyLedgerApp.Api.v1.Models;
 using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Infrastructure.DbConfig;
+using Tests.UnitTests.Controllers;
 
 namespace Tests.Integration.Transactions
 {
     [Collection(TestApiCollection.IntegrationTestsName)]
-    public class TransactionControllerIntegrationTests: IAsyncLifetime
+    public class TransactionControllerIntegrationTests: IClassFixture<TransactionControllerTestsFixture>
     {
-        private readonly AppDbContext _appDbContext;
         private readonly HttpClient _client;
         private readonly TransactionTestCaseHelper _testCaseHelper;
 
-        public TransactionControllerIntegrationTests(IntegrationTestsFactory factory)
+        public TransactionControllerIntegrationTests(TransactionControllerTestsFixture fixture)
         {
-            _client = factory.CreateClient();
-            factory.InitializeDatabase();
-            _appDbContext = factory.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
-            _testCaseHelper = new TransactionTestCaseHelper(_appDbContext);
-        }
-        public async Task InitializeAsync()
-        {
-            await _testCaseHelper.InitTestCase();
+            _client = fixture.Client;
+            _testCaseHelper = fixture.TestCaseHelper;
         }
 
         [Fact]
@@ -69,7 +63,7 @@ namespace Tests.Integration.Transactions
             TransactionRequest transaction = new()
             {
                 Description = "test",
-                Amount = 100,
+                Amount = 150,
                 Type = TransactionType.Deposit,
                 LedgerId = _testCaseHelper.GetLedgerId()
             };
@@ -105,37 +99,46 @@ namespace Tests.Integration.Transactions
         }
 
         [Fact]
-        public async Task DeleteTransactions_Test()
+        public async Task DeleteTransaction_Test()
         {
-            //// GIVEN //
-            //var reqUri = $"/api/v1/transactions/";
+            // GIVEN //
+            Transaction transaction = new()
+            {
+                Description = "test",
+                Amount = 10250,
+                Type = TransactionType.Deposit,
+                LedgerId = _testCaseHelper.GetLedgerId()
+            };
 
-            //var transactionsCountFromDB = await _testCaseHelper.GetTransactionsCountAsync();
+            await _testCaseHelper.AddTransaction(transaction);
 
-            //// WHEN //
-            //TestAuthHandler.IsAuthEnabled = true;
-            //var unauthorizedResponse = await _client.GetAsync(reqUri);
+            var reqUri = $"/api/v1/transactions/{transaction.Id}";
 
-            //TestAuthHandler.IsAuthEnabled = false;
-            //var response = await _client.GetAsync(reqUri);
+            // WHEN //
+            var transactionsCountBefore = await _testCaseHelper.GetTransactionsCountAsync();
+            var ledgerBalanceBefore = await _testCaseHelper.GetLedgerCurrentBalanceAsync();
 
-            //var transactionListParsedFromResponse = await response.Content.ReadFromJsonAsync<List<TransactionDTOExposed>>();
+            TestAuthHandler.IsAuthEnabled = true;
+            var unauthorizedResponse = await _client.DeleteAsync(reqUri);
 
-            //var transactionsCountFromResponse = transactionListParsedFromResponse?.Count;
+            TestAuthHandler.IsAuthEnabled = false;
+            var response = await _client.DeleteAsync(reqUri);
 
-            //// THEN //
-            //Assert.Equal(HttpStatusCode.Unauthorized, unauthorizedResponse.StatusCode);
+            var transactionsCountAfter = await _testCaseHelper.GetTransactionsCountAsync();
+            var ledgerBalanceAfter = await _testCaseHelper.GetLedgerCurrentBalanceAsync();
 
-            //response.EnsureSuccessStatusCode();
-            //Assert.NotNull(transactionListParsedFromResponse);
-            //Assert.Equal(transactionsCountFromDB, transactionsCountFromResponse);
+            // THEN //
+            Assert.Equal(HttpStatusCode.Unauthorized, unauthorizedResponse.StatusCode);
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+            int expectedTransactionsCountAfter = transactionsCountBefore - 1;
+            Assert.Equal(expectedTransactionsCountAfter, transactionsCountAfter);
+
+            decimal expectedLedgerBalanceAfter = ledgerBalanceBefore - transaction.Amount;
+            Assert.Equal(expectedLedgerBalanceAfter, ledgerBalanceAfter);
         }
 
-
-        public async Task DisposeAsync()
-        {
-            await _appDbContext.DisposeAsync();
-        }
     }
 
 }
