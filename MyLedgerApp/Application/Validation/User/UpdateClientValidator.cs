@@ -1,20 +1,15 @@
 ﻿
 using FluentValidation;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Application.Validation.User
 {
-    public class UpdateUserValidator : ValidatorBase<UserUpdateRequest, UpdateUserValidator>
+    public class UpdateClientValidator : ValidatorBase<UpdateClientRequest, UpdateClientValidator>
     {
         protected override void SetValidations()
         {
             RuleFor(l => l.Email).EmailAddress()
                 .When(l => !string.IsNullOrWhiteSpace(l.Email));
-
-            RuleFor(l => l.ServiceCenter).Empty()
-                .When(l => l.UserType is UserType.Client)
-                .WithMessage("Clients cannot have SCs.");
         }
     }
 }

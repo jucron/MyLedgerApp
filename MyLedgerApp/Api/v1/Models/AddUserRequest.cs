@@ -1,18 +1,10 @@
-﻿using MyLedgerApp.Domain.Entities.Users;
-
-namespace MyLedgerApp.Api.v1.Models
+﻿namespace MyLedgerApp.Api.v1.Models
 {
-    public class UserAddRequest
+    public class AddUserRequest
     {
-
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string Name { get; set; }
-
         public required string Email { get; set; }
-
-        public UserType UserType { get; set; }
-
-        public string? ServiceCenter {  get; set; }
     }
 }

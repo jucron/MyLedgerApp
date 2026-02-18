@@ -17,11 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.13" />
-	</ItemGroup>
-
-
-	<ItemGroup>
 		<ProjectReference Include="..\Messaging\Messaging.csproj" />
 		<ProjectReference Include="..\MyLedgerApp\MyLedgerApp.csproj" />
 		<ProjectReference Include="..\Shared\Shared.csproj" />

@@ -2,6 +2,6 @@
 {
     public interface IDbSession
     {
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(DBExceptionContext? dbExContext = null);
     }
 }

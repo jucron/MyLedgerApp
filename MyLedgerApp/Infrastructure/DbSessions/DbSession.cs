@@ -6,9 +6,16 @@ namespace MyLedgerApp.Infrastructure.DbSessions
     public class DbSession(AppDbContext dbContext) : IDbSession
     {
         private readonly AppDbContext _db = dbContext;
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(DBExceptionContext? dbExContext = null)
         {
-            await _db.SaveChangesAsync(CTokenHolder.Current);
+            try
+            {
+                await _db.SaveChangesAsync(CTokenHolder.Current);
+            }
+            catch (Exception ex)
+            {
+                throw DbExceptionTranslator.Translate(ex, dbExContext);
+            }
         }
     }
 }

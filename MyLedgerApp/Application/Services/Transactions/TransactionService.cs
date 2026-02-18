@@ -65,7 +65,7 @@ namespace MyLedgerApp.Application.Services.Transactions
             return TransactionMapper.MapTransactionToTransactionDTO(transaction) ;
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactions(Guid clientId)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByClient(Guid clientId)
         {
             var transactions = await _transactionRepository.GetTransactionsByClientId(clientId);
             return transactions.Select(TransactionMapper.MapTransactionToTransactionDTO);

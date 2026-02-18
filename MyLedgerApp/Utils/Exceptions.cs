@@ -20,7 +20,11 @@
         public class UsernameTakenException(string username) :
             ArgumentException($"Username {username} is already taken")
         {
-        }
 
-    }
+        }
+        public class EmailTakenException(string email) :
+            ArgumentException($"Email {email} is already taken")
+        {
+        }
+        }
 }

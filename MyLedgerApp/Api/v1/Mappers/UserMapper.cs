@@ -5,57 +5,41 @@ namespace MyLedgerApp.Api.v1.Mappers
 {
     public class UserMapper
     {
-        public static UserDTO MapUserToUserDTO(User user)
+        public static EmployeeDTO MapEmployeeToDTO(Employee employee)
         {
-            return (user is Client) ?  MapClientToUserDTO(user) : MapEmployeeToUserDTO(user);
-        }
-
-        private static UserDTO MapEmployeeToUserDTO(User user)
-        {
-            Employee employee = (Employee)user;
-            return new UserDTO
+            return new EmployeeDTO
             {
                 Id = employee.Id,
                 Username = employee.Credential.Username,
                 Name = employee.Name,
                 Email = employee.Email,
-                UserType = UserType.Employee,
                 ServiceCenter = employee.ServiceCenter
             };
         }
 
-        private static UserDTO MapClientToUserDTO(User user)
+        public static ClientDTO MapClientToDTO(Client client)
         {
-            Client client = (Client)user;
-            return new UserDTO
+            return new ClientDTO
             {
                 Id = client.Id,
                 Username = client.Credential.Username,
                 Name = client.Name,
                 Email = client.Email,
                 Ledgers = client.Ledgers.Select(l => l.Id).ToList(),
-                UserType = UserType.Client
             };
         }
 
-        public static User MapUserRequestToUser(UserAddRequest userRequest)
-        {
-            return (userRequest.UserType == UserType.Client) ?
-                MapUserRequestToClient(userRequest) : MapUserRequestToEmployee(userRequest);
-        }
-
-        private static Employee MapUserRequestToEmployee(UserAddRequest userRequest)
+        public static Employee MapEmployeeRequestToEmployee(AddEmployeeRequest userRequest)
         {
             return new Employee()
             {
                 Email = userRequest.Email,
                 Name = userRequest.Name,
-                ServiceCenter = userRequest.ServiceCenter ?? "not defined.",
+                ServiceCenter = userRequest.ServiceCenter,
                 Credential = new Credential(userRequest.Username, userRequest.Password)
             };
         }
-
-        private static Client MapUserRequestToClient(UserAddRequest userRequest)
+        public static Client MapClientRequestToClient(AddClientRequest userRequest)
         {
             return new Client()
             {

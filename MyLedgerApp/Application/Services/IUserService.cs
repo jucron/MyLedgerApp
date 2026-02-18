@@ -1,14 +1,18 @@
 ﻿using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Application.Services
 {
     public interface IUserService
     {
-        Task<UserDTO> AddUser(UserAddRequest request);
-        Task DeleteUser(Guid id);
-        Task<UserDTO> GetUserById(Guid id);
-        Task<IEnumerable<UserDTO>> GetUsers(UserType type);
-        Task<UserDTO> UpdateUser(Guid id, UserUpdateRequest user);
+        Task<ClientDTO> AddClient(AddClientRequest request);
+        Task<EmployeeDTO> AddEmployee(AddEmployeeRequest request);
+        Task<ClientDTO> GetClient(Guid id);
+        Task<EmployeeDTO> GetEmployee(Guid id);
+        Task DeleteEmployee(Guid id);
+        Task DeleteClient(Guid id);
+        Task<IEnumerable<ClientDTO>> GetClients();
+        Task<IEnumerable<EmployeeDTO>> GetEmployees();
+        Task<ClientDTO> UpdateClient(Guid id, UpdateClientRequest userUpReq);
+        Task<EmployeeDTO> UpdateEmployee(Guid id, UpdateEmployeeRequest userUpReq);
     }
 }

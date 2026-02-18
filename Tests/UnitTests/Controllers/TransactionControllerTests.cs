@@ -20,32 +20,6 @@ namespace Tests.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetTransactions_ReturnsOk_WithTransactions()
-        {
-
-            // given //
-            var clientId = Guid.NewGuid();
-            var transactions = new List<TransactionDTO>
-                {
-                    new() { Id = Guid.NewGuid() }
-                };
-
-            _serviceMock
-                .Setup(s => s.GetTransactions(clientId))
-                .ReturnsAsync(transactions);
-
-            // when //
-            var result = await _controller.GetTransactions(clientId);
-
-            // then //
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedData = Assert.IsAssignableFrom<IEnumerable<TransactionDTO>>(okResult.Value);
-
-            Assert.Single(returnedData);
-            _serviceMock.Verify(s => s.GetTransactions(clientId), Times.Once);
-        }
-
-        [Fact]
         public async Task GetTransaction_ReturnsOk_WithTransaction()
         {
             // given //

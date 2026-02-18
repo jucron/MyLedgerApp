@@ -7,6 +7,6 @@ namespace MyLedgerApp.Application.Services.Transactions
         Task<TransactionDTO> AddTransaction(TransactionRequest transactionDTO);
         Task DeleteTransaction(Guid id);
         Task<TransactionDTO> GetTransactionById(Guid id);
-        Task<IEnumerable<TransactionDTO>> GetTransactions(Guid clientId);
+        Task<IEnumerable<TransactionDTO>> GetTransactionsByClient(Guid clientId);
     }
 }

@@ -19,15 +19,20 @@ namespace MyLedgerApp.Infrastructure.Repositories
             _db.Remove(user);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers(UserType type)
+        public async Task<IEnumerable<Client>> GetClients()
         {
-            IQueryable<User> query = _db.Users.AsNoTracking();
+            IQueryable<Client> query = _db.Users
+                .AsNoTracking()
+                .OfType<Client>();
 
-            query = type switch
-            {
-                UserType.Client => query.OfType<Client>(),
-                _ => query.OfType<Employee>()
-            };
+            return await query.ToListAsync(CTokenHolder.Current);
+        }
+
+        public async Task<IEnumerable<Employee>> GetEmployees()
+        {
+            IQueryable<Employee> query = _db.Users
+                .AsNoTracking()
+                .OfType<Employee>();
 
             return await query.ToListAsync(CTokenHolder.Current);
         }

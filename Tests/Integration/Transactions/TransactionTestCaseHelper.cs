@@ -1,4 +1,5 @@
-﻿using MyLedgerApp.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyLedgerApp.Domain.Entities;
 using MyLedgerApp.Domain.Entities.Users;
 using MyLedgerApp.Infrastructure.DbConfig;
 
@@ -6,15 +7,25 @@ namespace Tests.Integration.Transactions
 {
     public class TransactionTestCaseHelper
     {
-        public Client Client { get; private set; } = null!;
-        public Employee Employee { get; private set; } = null!;
-        public Ledger Ledger { get; private set; } = null!;
+        private Client Client = null!;
+        private Employee Employee = null!;
+        private Ledger Ledger = null!;
 
         private readonly AppDbContext _db;
 
         public TransactionTestCaseHelper(AppDbContext db)
         {
             _db = db;
+        }
+
+        public Guid GetLedgerId()
+        {
+            return Ledger.Id;
+        }
+        public async Task<decimal> GetLedgerCurrentBalanceAsync()
+        {
+            await _db.Entry(Ledger).ReloadAsync();
+            return Ledger.CurrentBalance;
         }
 
         public async Task InitTestCase()
@@ -45,13 +56,20 @@ namespace Tests.Integration.Transactions
             _db.Ledgers.Add(Ledger);
 
             await _db.SaveChangesAsync();
-
         }
 
         public async Task AddTransaction(Transaction transaction)
         {
             _db.Transactions.Add(transaction);
             await _db.SaveChangesAsync();
+        }
+        public async Task<int> GetTransactionsCountAsync()
+        {
+            return await _db.Transactions.CountAsync();
+        }
+        public async Task<int> GetLedgerCount()
+        {
+            return await _db.Transactions.CountAsync();
         }
     }
 }

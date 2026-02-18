@@ -19,18 +19,7 @@ namespace MyLedgerApp.Api.v1.Controllers
             _transactionService = transactionService;
         }
 
-        /// <summary>
-        /// Get all transactions, belonging to a Client.
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("client/{clientId}")]
-        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactions(Guid clientId)
-        {
-            GuidValidator.Run(clientId);
-            return Ok(await _transactionService.GetTransactions(clientId));
-        }
+      
 
         /// <summary>
         /// Get a single Transaction.

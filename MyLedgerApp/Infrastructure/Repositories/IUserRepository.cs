@@ -4,7 +4,8 @@ namespace MyLedgerApp.Infrastructure.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllUsers(UserType type);
+        Task<IEnumerable<Client>> GetClients();
+        Task<IEnumerable<Employee>> GetEmployees();
         Task<User?> GetUserById(Guid id, bool isTracking = false);
         Task<User?> GetUserByUsername(string username, bool isTracking = false);
         void DeleteUser(User user);

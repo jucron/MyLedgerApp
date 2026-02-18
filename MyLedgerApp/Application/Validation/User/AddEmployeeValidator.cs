@@ -1,11 +1,10 @@
 ﻿
 using FluentValidation;
 using MyLedgerApp.Api.v1.Models;
-using MyLedgerApp.Domain.Entities.Users;
 
 namespace MyLedgerApp.Application.Validation.User
 {
-    public class AddUserValidator : ValidatorBase<UserAddRequest, AddUserValidator>
+    public class AddEmployeeValidator : ValidatorBase<AddEmployeeRequest, AddEmployeeValidator>
     {
         protected override void SetValidations()
         {
@@ -13,9 +12,7 @@ namespace MyLedgerApp.Application.Validation.User
             RuleFor(l => l.Password).NotEmpty();
             RuleFor(l => l.Email).NotEmpty().EmailAddress();
             RuleFor(l => l.Name).NotEmpty();
-            RuleFor(l => l.UserType).IsDefinedEnum();
-            RuleFor(l => l.ServiceCenter).NotEmpty()
-                .When(l => l.UserType == UserType.Employee)
+            RuleFor(l => l.ServiceCenter).IsDefinedEnum()
                 .WithMessage("SC necessary for employees.");
         }
     }

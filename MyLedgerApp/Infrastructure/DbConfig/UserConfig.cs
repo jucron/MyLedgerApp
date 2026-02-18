@@ -15,16 +15,24 @@ namespace MyLedgerApp.Infrastructure.DbConfig
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Name).IsRequired();
+
             builder.Property(x => x.Email).IsRequired();
+            builder.HasIndex(x => x.Email)
+                .IsUnique()
+                .HasDatabaseName(UniqueConstraints.Email);
 
             builder
                 .HasDiscriminator<string>("UserType")
                 .HasValue<Client>("Client")
                 .HasValue<Employee>("Employee");
 
-            builder.OwnsOne(u => u.Credential, c =>
+            builder.OwnsOne(u => u.Credential, (OwnedNavigationBuilder<User,Credential> c) =>
             {
                 c.Property(p => p.Username).IsRequired();
+
+                c.HasIndex(c => c.Username)
+                .IsUnique()
+                .HasDatabaseName(UniqueConstraints.Username);
             });
 
         }
