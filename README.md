@@ -1,4 +1,4 @@
-# MyLedgerApp – .NET & Event-Driven Architecture
+# MyLedgerApp – Ledger Management System (.NET & Messaging Architecture)
 
 ## Overview
 This project is a backend application built in **C# (.NET)** to demonstrate
@@ -12,64 +12,122 @@ expected in professional backend teams.
 ---
 
 ## Problem Statement
-Describe the problem this system solves.
 
-- What kind of application is this?
-- What responsibilities does it have?
-- What is intentionally **out of scope**?
-
-> Example:  
-> This service handles domain operations and publishes events to Azure Service
-> Bus so downstream systems can react asynchronously.
+This application aims to keep track of any User's cash balance in a clear and organized way. 
+Bank apps don’t always cover everything, and spreadsheets can be 
+confusing or error-prone. There’s a need for a simple app where users can record 
+deposits and withdrawals, receive notifications, automatically see their current balance, 
+and review their transaction history without dealing with complex tools.
 
 ---
 
 ## Architecture Overview
 
 ### High-Level Architecture
-Describe the overall structure of the system.
+
+The LedgerApp is structured using a multi-layered architecture to ensure clear separation 
+of concerns, maintainability, and scalability. Each layer has a specific responsibility 
+and communicates only with adjacent layers.
+
+The system is composed of:
 
 - API layer
 - Application / domain layer
 - Infrastructure layer
-- Event-driven components
+- Messaging (Event-driven)
 
-(Optional but highly recommended)
-- Add an architecture diagram here
-[ Client ]
-?
-[ API ]
-?
-[ Domain / Services ]
-?
-[ Database ] ?? [ Azure Service Bus ]
+#### API Layer
+The API layer is the entry point to the system. Its responsibilities:
+
+> Expose HTTP endpoints
+
+> Validate incoming requests
+
+> Convert requests into application commands
+
+> Return responses to clients
+
+#### Application / Domain Layer
+
+This is the core of the system. It contains Business rules, 
+Domain models (e.g., Ledger, Transaction), Use cases (e.g., Deposit, Withdrawal). 
+This layer does not depend on databases or messaging systems.
+Responsibilities are:
+
+> Business logic
+
+> Calculate balances
+
+> Coordinate operations
+
+> Trigger domain events
+
+#### Infrastructure Layer
+
+This layer handles all persistance concerns (Database) such as:
+
+> Database configuration & access
+
+> Database modeling
+
+> Repository implementations
+
+#### Messaging (Events)
+The Messaging component is an independent, decoupled service responsible for
+handling asynchronous communication. It integrates with Azure Service Bus & 
+Azure Email Communication Services. It's responsibilities:
+
+> Listen/Produce messages from/to Azure Service Bus
+
+> Send email notifications through Azure Email
+
+> Handle cross-system communication
+
+
+### Solution Components and Layers
+The components in this solution are organized in a decoupled structure that aims to
+separate responsabilities but also provide full interaction.
+Below there is a diagram showing how this is delivered.
+
+<img src="solution_components.jpg" alt="Alt text" width="500">
+
+**Host** is where all components are defined, including DI and app's properties.
+
+**MyLedgerApp** contains the API and Infrastructure Layer.
+
+**Messaging** provides Event-Driven services
+
+**Shared** hold elements that are commonly shared between all components.
+
 
 ---
 
 ### Architectural Decisions
-Explain *why* things are structured this way.
 
-- Why a layered architecture?
-- Why event-driven communication?
-- Why Azure Service Bus?
+- Layered architecture: Keeps things organized. API handles requests, Domain contains business rules, Infrastructure manages technical stuff. Makes the app easier to maintain and test.
 
-Include trade-offs:
-- What this design optimizes for
-- What it intentionally sacrifices
+- Event-driven (Messaging): Lets the app handle emails and notifications without slowing down core logic. Components are decoupled and scalable.
+
+- Azure Service Bus: Reliable cloud messaging. Ensures messages are delivered even if the Messaging service is temporarily down.
+
+**Trade-offs:**
+
+Pros: Clear structure, scalable, maintainable, fault-tolerant.
+
+Cons: More setup, extra components, slightly higher latency for async operations.
 
 ---
 
 ## Technology Stack
 
 - **.NET / ASP.NET Core**
+- **Database** (SQL Server / SqlLite)
+- **ORM** (Entity Framework Core)
 - **Azure Service Bus**
-- **Database** (SQL Server / PostgreSQL / etc.)
-- **ORM** (Entity Framework Core / Dapper)
-- **Logging** (Serilog)
-- **Testing** (xUnit / NUnit / Moq)
-- **CI** (GitHub Actions)
+- **Testing** (xUnit / Moq)
+- **Validation** (FluentValidations)
 
-Briefly explain why each technology was chosen.
+This tech decision is meant to deliver good compatibility and performance.
 
 ---
 
