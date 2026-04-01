@@ -89,7 +89,7 @@ The components in this solution are organized in a decoupled structure that aims
 separate responsabilities but also provide full interaction.
 Below there is a diagram showing how this is delivered.
 
-<img src="solution_components.jpg" alt="Alt text" width="500">
+<img src="assets/solution_components.jpg" alt="Alt text" width="500">
 
 **Host** is where all components are defined, including DI and app's properties.
 
@@ -134,166 +134,85 @@ This tech decision is meant to deliver good compatibility and performance.
 ## API Design
 
 ### Endpoints
-Describe the main API endpoints and their responsibilities.
+This application provides 5 API endpoints collections: Auth, Client, Employee, Ledger and Transaction.
+Below you can see each one of them:
+<p>
+<img src="assets/endpoints-auth.jpg" alt="Alt text" width="700">
+<p>
+<img src="assets/endpoints-client.jpg" alt="Alt text" width="750">
+<p>
+<img src="assets/endpoints-employee.jpg" alt="Alt text" width="700">
+<p>
+<img src="assets/endpoints-ledger.jpg" alt="Alt text" width="480">
+<p>
+<img src="assets/endpoints-transaction.jpg" alt="Alt text" width="460">
 
-- RESTful conventions
-- HTTP status codes
-- Validation strategy
+
+- <b>RESTful conventions</b>
+
+-> The action is expressed by the HTTP method, not the URL.
+
+-> Follow a consistent, hierarchical pattern in URL structure.
+
+-> The response code must accurately reflect what happened with HTTP Status Codes.
+
+-> Always versioning the API to evolve it without breaking consumers.
+
+-> Naming Conventions (plural noums, lowercase, etc).
+
+- <b>HTTP status codes</b>
+
+-> Success Scenario
+
+> GET: 200 OK
+
+> POST: 201 Created
+
+> PUT: 200 OK 
+
+> DELETE: 204 No Content
+
+-> Errors
+
+> Wrong Validations or Bad Argument: 400 Bad Request
+
+> No Authorization: 401 Unauthorized
+
+> No Resource: 404 Not Found
+
+> Invalid or wrong rule: 403 Forbidden
+
+> Unexpected: 500 Internal Server Error
 
 ### API Documentation
-- Swagger/OpenAPI is available at: `/swagger`
-- Example requests and responses
+- Swagger/OpenAPI is available at: `<baseUrl>/swagger/index.html`
+- In <i>Development</i> mode, the swagger page will open automatically
+
+#### Example Use Case: Client, Employee and Ledger Registration
+
+In this next Sequence Diagram, it is shown a Use Case of a Client, Employee and Ledger registration.
+<p>
+<img src="assets/sequence-add_client.jpg" alt="Alt text" width="460">
+
+
+
+User->Client API:Add a new Client
+User<--Client API:returns new Client data
+
+User->Employee API:Add a new Employee
+User<--Employee API:returns new Employee data 
+
+User->Auth API:Authenticate with credentials
+User<--Auth API:returns JWT
+
+User->Ledger API:Add a new Ledger Account using ClientID and EmployeeID
+note over User,Ledger API: note that this call is **authenticated** with bearer token
+User<--Ledger API:returns new Ledger data
+
 
 ---
 
 ## Database Design
 
 ### Data Model
-Explain the role of the database in the system.
-
-- What kind of data is stored?
-- Is it transactional, read-optimized, or both?
-
-(Optional but recommended)
-- Add a simplified database diagram here
-
-[ Table A ] 1---* [ Table B ]
-
-
-### Design Considerations
-- Constraints and indexes
-- Consistency guarantees
-- How the DB supports event-driven workflows (e.g. outbox, idempotency)
-
----
-
-## Event-Driven Architecture
-
-### Messaging Flow
-Explain how events are produced and consumed.
-
-- What events are published?
-- When are they published?
-- Who consumes them?
-
-### Reliability & Consistency
-Describe how the system handles:
-- Retries
-- Failures
-- Duplicate messages
-- Dead-letter scenarios
-
----
-
-## Error Handling & Resilience
-
-- Global exception handling
-- Retry policies
-- Graceful degradation
-
-Explain how failures are handled without crashing the system.
-
----
-
-## Logging & Observability
-
-- Structured logging
-- Correlation IDs
-- Log levels usage
-
-(Optional)
-- How this would integrate with Application Insights or similar tools
-
----
-
-## Security Considerations
-
-- Authentication / authorization approach
-- Secure configuration management
-- Input validation
-
-Explain what is implemented and what is intentionally simplified.
-
----
-
-## Testing Strategy
-
-### Unit Tests
-- What layers are tested?
-- What is mocked?
-- What kind of scenarios are covered?
-
-### Testing Philosophy
-Explain *what you chose not to test* and why.
-
----
-
-## Local Development
-
-### Prerequisites
-- .NET SDK
-- Docker (optional)
-- Azure Service Bus emulator or configuration
-
-### Running the Application
-
-```bash
-dotnet restore
-dotnet build
-dotnet run
-```
-
-## CI / Automation
-
-Continuous Integration pipeline
-
-Build & test steps
-
-Code quality checks
-
-Explain what runs automatically and why.
-
-## Trade-offs & Limitations
-
-Be honest here. This section is gold for recruiters.
-
-What shortcuts were taken?
-
-What would you improve in a real production system?
-
-What was intentionally left out?
-
-## Possible Improvements
-
-Examples:
-
-Caching
-
-API versioning
-
-Better observability
-
-Performance optimizations
-
-Security hardening
-
-## What This Project Demonstrates
-
-Summarize your skills clearly:
-
-Backend API design
-
-Event-driven systems
-
-Cloud messaging
-
-Clean architecture
-
-Testing & automation
-
-Production-oriented thinking
-
-## Author
-
-Your name
-LinkedIn / GitHub / Portfolio link
+//todo!
